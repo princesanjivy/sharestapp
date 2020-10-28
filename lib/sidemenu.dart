@@ -58,7 +58,7 @@ class SideMenu extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.rate_review_outlined,
+                  Icons.rate_review,
                   color: Colors.black,
                 ),
                 title: Text(
