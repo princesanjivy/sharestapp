@@ -1,5 +1,5 @@
-name: sharestapp
-description: simply share!
+name: Sharestapp
+description: I'll make it Simple
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   receive_sharing_intent: ^1.4.1
   google_fonts: ^1.1.1
+  http: ^0.12.2
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,6 @@ flutter:
   fonts:
     - family: FontAwesome
       fonts:
-        - asset: assets\icons\FontAwesome.ttf
+        - asset: assets/icons/FontAwesome.ttf
   #
   # For details regarding fonts from package dependencies,

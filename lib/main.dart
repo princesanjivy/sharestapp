@@ -1,7 +1,10 @@
 import 'package:sharestapp/mytabview.dart';
 import 'package:flutter/material.dart';
+// import 'package:sharestapp/getimage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
