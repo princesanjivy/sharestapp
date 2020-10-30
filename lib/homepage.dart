@@ -22,9 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       setState(() {
-        img();
-        instaposturl = value;
-        print("Shared: $instaposturl");
+        getImageFromUrl(value);
       });
     }, onError: (err) {
       print("getLinkStream error: $err");
@@ -33,20 +31,24 @@ class _MyHomePageState extends State<MyHomePage> {
     // For sharing or opening urls/text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((String value) {
       setState(() {
-        img();
-        instaposturl = value;
-        print("Shared: $instaposturl");
+        getImageFromUrl(value);
       });
     });
   }
 
-  void img() {
-    GetImageFromUrl(instaposturl).myimage().then((value) {
-      print(value);
-      setState(() {
-        _imageurl = value;
+  void getImageFromUrl(String instaposturl) {
+    if (instaposturl != null) {
+      print(instaposturl);
+
+      GetImageFromUrl(instaposturl).myimage().then((value) {
+        print(value);
+        setState(() {
+          _imageurl = value;
+        });
       });
-    });
+    } else {
+      print("Its null!");
+    }
   }
 
   @override
