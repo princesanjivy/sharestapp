@@ -27,6 +27,7 @@ dependencies:
   google_fonts: ^1.1.1
   http: ^0.12.2
   flutter_cache_manager: ^2.0.0
+  cached_network_image: ^2.3.3
 
 dev_dependencies:
   flutter_test:

@@ -17,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     
     GetImageFromUrl(instaposturl).myimage().then((value) {
-      // print(value);
+      print(value);
       setState(() {
         _imageurl = value;
       });
