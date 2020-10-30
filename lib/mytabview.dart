@@ -46,10 +46,7 @@ class _MyTabViewState extends State<MyTabView> {
         ),
         drawer: SideMenu(),
         body: TabBarView(
-          children: [
-            MyHomePage(),
-            MyWAStatusPage()
-          ],
+          children: [MyHomePage(), MyWAStatusPage()],
         ),
       ),
     );
