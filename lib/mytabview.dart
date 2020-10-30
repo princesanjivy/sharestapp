@@ -1,7 +1,9 @@
 import 'package:sharestapp/font_awesome_icons.dart';
+import 'package:sharestapp/homepage.dart';
 import 'package:sharestapp/sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sharestapp/wastatuspage.dart';
 
 class MyTabView extends StatefulWidget {
   @override
@@ -43,6 +45,12 @@ class _MyTabViewState extends State<MyTabView> {
           ),
         ),
         drawer: SideMenu(),
+        body: TabBarView(
+          children: [
+            MyHomePage(),
+            MyWAStatusPage()
+          ],
+        ),
       ),
     );
   }

@@ -26,6 +26,7 @@ dependencies:
   receive_sharing_intent: ^1.4.1
   google_fonts: ^1.1.1
   http: ^0.12.2
+  flutter_cache_manager: ^2.0.0
 
 dev_dependencies:
   flutter_test:
