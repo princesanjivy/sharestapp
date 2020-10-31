@@ -19,7 +19,7 @@ class GetImageFromUrl {
       var r = "\\u0026";
       src = src.replaceAll(r, "&");
     }
-
+    
     return src;
   }
 }
