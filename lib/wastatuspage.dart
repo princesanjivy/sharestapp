@@ -21,31 +21,57 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
           .map((item) => item.path)
           .where((item) => item.endsWith(".jpg"))
           .toList();
-      
+
       print(files.length);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: ListView.builder(
+    return GridView.builder(
       itemCount: files.length,
-      itemBuilder: (BuildContext context, int index) {
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, mainAxisSpacing: 15.0, crossAxisSpacing: 3.0),
+      itemBuilder: (context, index) {
         File myfile = new File(files[index]);
-        // print(myfile);
-        return Center(
-          child: Stack(
+        return Card(
+          elevation: 5.0,
+          color: Colors.white,
+          child: Column(
             children: [
-              Container(
-                child: Image.file(myfile),
-                width: 150,
-                height: 150,
+              SizedBox(
+                height: 180.0,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.file(myfile, fit: BoxFit.cover),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.share,
+                    ),
+                    onPressed: () {},
+                    color: Colors.blue,
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.save_alt_rounded,
+                    ),
+                    onPressed: () {},
+                    color: Colors.blue,
+                  ),
+                ],
               ),
             ],
           ),
         );
       },
-    ));
+    );
   }
 }
