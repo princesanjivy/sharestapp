@@ -1,9 +1,9 @@
-import 'package:sharestapp/font_awesome_icons.dart';
 import 'package:sharestapp/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sharestapp/wastatuspage.dart';
 import 'package:sharestapp/sharestapppage.dart';
+import 'package:sharestapp/font_awesome_icons.dart';
 
 class MyTabView extends StatefulWidget {
   @override
@@ -19,10 +19,10 @@ class _MyTabViewState extends State<MyTabView> {
         appBar: AppBar(
           title: Text(
             'Sharestapp',
-            style: GoogleFonts.raleway(
+            style: GoogleFonts.aBeeZee(
               fontSize: 30.0,
               color: Colors.white,
-              letterSpacing: 0.0,
+              fontWeight: FontWeight.bold,
             ),
           ),
           centerTitle: false,
@@ -31,19 +31,13 @@ class _MyTabViewState extends State<MyTabView> {
           bottom: TabBar(
             tabs: [
               Tab(
-                icon: Icon(
-                  FontAwesome.home,
-                ),
+                text: 'HOME',
               ),
               Tab(
-                icon: Icon(
-                  FontAwesome.whatsapp,
-                ),
+                text: 'WHATSAPP STATUS',
               ),
               Tab(
-                icon: Icon(
-                  FontAwesome.instagram,
-                ),
+                text: 'SAVED IMAGES',
               ),
             ],
             indicatorColor: Colors.white,

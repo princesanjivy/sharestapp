@@ -1,5 +1,6 @@
 import 'package:sharestapp/mytabview.dart';
 import 'package:flutter/material.dart';
+import 'package:sharestapp/aboutus.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,6 +17,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyTabView(),
+      routes: {
+        '/aboutus': (context) => AboutUs(),
+      },
     );
   }
 }
