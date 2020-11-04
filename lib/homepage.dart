@@ -3,6 +3,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:sharestapp/getimage.dart';
 import 'dart:async';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:sharestapp/saveimage.dart';
+import 'package:sharestapp/shareimage.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -66,11 +68,25 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Share to WhatsApp"),
-          content: new Image.file(file.file),
+          title: Text("Share to WhatsApp"),
+          content: Image.file(file.file),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
+            FlatButton(
+              child: Text("Save"),
+              onPressed: () {
+                SaveImageToDir(file.file).saveImageToDir();
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text("Share"),
+              onPressed: () {
+                ShareImage(file.file.path).shareImage();
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -83,8 +99,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: f == null ? Text("Hello, world!") : Text("welcome"),
+    return Scaffold(
+      body: Container(
+        height: 100.0,
+        color: Colors.amber,
+      ),
     );
   }
 }
