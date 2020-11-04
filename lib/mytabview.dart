@@ -4,6 +4,7 @@ import 'package:sharestapp/sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sharestapp/wastatuspage.dart';
+import 'package:sharestapp/sharestapppage.dart';
 
 class MyTabView extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _MyTabViewState extends State<MyTabView> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -40,13 +41,18 @@ class _MyTabViewState extends State<MyTabView> {
                   FontAwesome.whatsapp,
                 ),
               ),
+              Tab(
+                icon: Icon(
+                  FontAwesome.instagram,
+                ),
+              ),
             ],
             indicatorColor: Colors.white,
           ),
         ),
-        drawer: SideMenu(),
+        // drawer: SideMenu(),
         body: TabBarView(
-          children: [MyHomePage(), MyWAStatusPage()],
+          children: [MyHomePage(), MyWAStatusPage(), MySharestappPage()],
         ),
       ),
     );
