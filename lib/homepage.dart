@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed:
                     () {}, //code to save image to local should be placed here.
                 icon: Icon(
-                  Icons.download_sharp,
+                  Icons.file_download,
                   color: Colors.blueAccent,
                 ),
               ),
@@ -184,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       FlatButton.icon(
                         onPressed: () {},
                         icon: Icon(
-                          Icons.star_border_rounded,
+                          Icons.star_border,
                         ),
                         label: Text(
                           'RATE & REVIEW',
@@ -300,7 +300,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           alignment: Alignment.topLeft,
                           child: FlatButton.icon(
                             onPressed: () {},
-                            icon: Icon(Icons.share_outlined),
+                            icon: Icon(Icons.share),
                             label: Text(
                               'Images Shared',
                               style: GoogleFonts.aBeeZee(
@@ -350,7 +350,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           alignment: Alignment.topLeft,
                           child: FlatButton.icon(
                             onPressed: () {},
-                            icon: Icon(Icons.cached_outlined),
+                            icon: Icon(Icons.cached),
                             label: Text(
                               'Clear Cache',
                               style: GoogleFonts.aBeeZee(
