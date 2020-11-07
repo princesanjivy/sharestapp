@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sharestapp/wastatuspage.dart';
 import 'package:sharestapp/sharestapppage.dart';
-import 'package:sharestapp/font_awesome_icons.dart';
 
 class MyTabView extends StatefulWidget {
   @override
