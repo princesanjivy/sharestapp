@@ -7,19 +7,6 @@ import 'dart:async';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:sharestapp/saveimage.dart';
 import 'package:sharestapp/shareimage.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-void redirect(String url) async {
-  if (await canLaunch(url)) {
-    await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-    );
-  } else {
-    throw 'Sorry,could not launch $url';
-  }
-}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -114,13 +101,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Column(
         children: [
+          TextField(
+            decoration: InputDecoration(
+              hintText: 'Drop the image link here',
+              suffixIcon: IconButton(
+                onPressed:
+                    () {}, //code to save image to local should be placed here.
+                icon: Icon(
+                  Icons.file_download,
+                  color: Colors.blueAccent,
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              contentPadding: EdgeInsets.all(15.0),
+              prefixIcon: Icon(
+                Icons.link,
+                color: Colors.blueAccent,
+              ),
+              hintStyle: GoogleFonts.raleway(
+                letterSpacing: 1.0,
+              ),
+            ),
+            autofocus: false,
+          ),
           SizedBox(
-            height: h * 0.030,
+            height: 30.0,
           ),
           Container(
             decoration: BoxDecoration(
@@ -130,8 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.grey[350],
               ),
             ),
-            height: h * 0.3,
-            width: w * 0.9,
+            height: 255,
+            width: 450,
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 20.0,
@@ -151,21 +161,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.black,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 2.0,
-                      right: 5.0,
-                      bottom: 5.0,
-                      top: 35.0,
-                    ),
-                    child: Text(
-                      'Sharestapp is an open source application that lets an end user to directly share an image from Instagram to other apps in an exact image format and also allows the user to Save the respected image in the local storage.',
-                      style: GoogleFonts.sourceSansPro(
-                        fontSize: 17.0,
-                        letterSpacing: 0.0,
-                        color: Colors.black,
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                  Wrap(
+                    children: [
+                      Text(
+                        'Sharestapp is an open source application that lets an end user to directly share an image from Instagram to other apps in an exact image format and also allows the user to Save the respected image in the local storage.',
+                        style: GoogleFonts.sourceSansPro(
+                          fontSize: 17.0,
+                          letterSpacing: 0.0,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   SizedBox(
                     height: 45.0,
@@ -175,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       FlatButton.icon(
                         onPressed: () {},
                         icon: Icon(
-                          Icons.star_border_rounded,
+                          Icons.star_border,
                         ),
                         label: Text(
                           'RATE & REVIEW',
@@ -203,19 +212,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           SizedBox(
-            height: h * 0.030,
+            height: 30.0,
           ),
           Row(
             children: [
               SizedBox(
-                width: 25.0,
+                width: 20.0,
               ),
               Material(
                 borderRadius: BorderRadius.circular(15),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(15),
                   onTap: () {
-                    redirect('https://play.google.com/store');
+                    print(
+                        ' Redirect to Playstore'); //Place the code here to redirect the user to playstore
                   },
                   splashColor: Colors.blue,
                   child: Container(
@@ -226,16 +236,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.grey[350],
                       ),
                     ),
-                    height: h * 0.116,
-                    width: w * 0.395,
+                    height: 100,
+                    width: 190,
                     child: Column(
                       children: [
                         Align(
                           alignment: Alignment.topLeft,
                           child: FlatButton.icon(
-                            onPressed: () {
-                              redirect('https://play.google.com/store');
-                            },
+                            onPressed: () {},
                             icon: Icon(FontAwesome.cart_plus),
                             label: Text(
                               'More Apps',
@@ -268,7 +276,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(
-                width: w * 0.111,
+                width: 60.0,
               ),
               Material(
                 borderRadius: BorderRadius.circular(15),
@@ -284,15 +292,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.grey[350],
                       ),
                     ),
-                    height: h * 0.116,
-                    width: w * 0.395,
+                    height: 100,
+                    width: 190,
                     child: Column(
                       children: [
                         Align(
                           alignment: Alignment.topLeft,
                           child: FlatButton.icon(
                             onPressed: () {},
-                            icon: Icon(Icons.share_outlined),
+                            icon: Icon(Icons.share),
                             label: Text(
                               'Images Shared',
                               style: GoogleFonts.aBeeZee(
@@ -311,12 +319,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           SizedBox(
-            height: h * 0.030,
+            height: 30.0,
           ),
           Row(
             children: [
               SizedBox(
-                width: 25.0,
+                width: 20.0,
               ),
               Material(
                 borderRadius: BorderRadius.circular(15),
@@ -334,15 +342,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.grey[350],
                       ),
                     ),
-                    height: h * 0.116,
-                    width: w * 0.395,
+                    height: 100,
+                    width: 190,
                     child: Column(
                       children: [
                         Align(
                           alignment: Alignment.topLeft,
                           child: FlatButton.icon(
                             onPressed: () {},
-                            icon: Icon(Icons.cached_outlined),
+                            icon: Icon(Icons.cached),
                             label: Text(
                               'Clear Cache',
                               style: GoogleFonts.aBeeZee(
@@ -374,7 +382,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(
-                width: w * 0.111,
+                width: 60.0,
               ),
               Material(
                 borderRadius: BorderRadius.circular(15),
@@ -392,16 +400,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.grey[350],
                       ),
                     ),
-                    height: h * 0.116,
-                    width: w * 0.395,
+                    height: 100,
+                    width: 190,
                     child: Column(
                       children: [
                         Align(
                           alignment: Alignment.topLeft,
                           child: FlatButton.icon(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/aboutus');
-                            },
+                            onPressed: () {},
                             icon: Icon(Icons.code),
                             label: Text(
                               'Developers',
@@ -435,22 +441,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 90.0),
-            child: OutlineButton(
-              onPressed: () {
-                showAboutDialog(
-                  //aboutdialogcode to be modified later.
-                  context: context,
-                  applicationIcon: Icon(
-                      Icons.share_outlined), //must add our icon once designed.
-                  applicationName: 'Sharestapp',
-                  applicationVersion: '1.0.0',
-                );
-              },
-              child: Text('More Info'),
-            ),
-          )
         ],
       ),
     );
