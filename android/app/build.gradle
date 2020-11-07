@@ -36,6 +36,7 @@ android {
         applicationId "com.princeappstudio.sharestapp"
         minSdkVersion 16
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -51,4 +52,9 @@ android {
 
 flutter {
     source '../..'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.android.gms:play-services-ads:19.5.0'
 }

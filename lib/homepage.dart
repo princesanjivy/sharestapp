@@ -16,6 +16,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String con =
+      "Sharestapp is an open source application that lets an end user to directly share an image from Instagram to other apps in an exact image format and also allows the user to Save the respected image in the local storage.";
   String _imageurl;
   String instaposturl;
   String _sharedText;
@@ -25,7 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       setState(() {
@@ -104,340 +105,278 @@ class _MyHomePageState extends State<MyHomePage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Drop the image link here',
-              suffixIcon: IconButton(
-                onPressed:
-                    () {}, //code to save image to local should be placed here.
-                icon: Icon(
-                  Icons.file_download,
-                  color: Colors.blueAccent,
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10,
+              right: 10,
+              left: 10,
+              // bottom: 10,
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(
+                top: 10,
+                right: 10,
+                left: 10,
+                bottom: 10,
+              ),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: Colors.grey[300],
                 ),
-              ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              contentPadding: EdgeInsets.all(15.0),
-              prefixIcon: Icon(
-                Icons.link,
-                color: Colors.blueAccent,
-              ),
-              hintStyle: GoogleFonts.raleway(
-                letterSpacing: 1.0,
-              ),
-            ),
-            autofocus: false,
-          ),
-          SizedBox(
-            height: 30.0,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                width: 1.0,
-                color: Colors.grey[350],
-              ),
-            ),
-            height: 255,
-            width: 450,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 20.0,
-                right: 20.0,
-                top: 20.0,
-                bottom: 0.0,
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Sharestapp',
-                    style: GoogleFonts.aBeeZee(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.0,
-                      color: Colors.black,
+                    con,
+                    textAlign: TextAlign.justify,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 10,
                     ),
-                  ),
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  Wrap(
-                    children: [
-                      Text(
-                        'Sharestapp is an open source application that lets an end user to directly share an image from Instagram to other apps in an exact image format and also allows the user to Save the respected image in the local storage.',
-                        style: GoogleFonts.sourceSansPro(
-                          fontSize: 17.0,
-                          letterSpacing: 0.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 45.0,
-                  ),
-                  Row(
-                    children: [
-                      FlatButton.icon(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.star_border,
-                        ),
-                        label: Text(
-                          'RATE & REVIEW',
-                          style: GoogleFonts.aBeeZee(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Colors.blue,
+                                size: 30,
+                              ),
+                              Text("Rate & Review"),
+                            ],
                           ),
+                          onTap: () {
+                            print(MediaQuery.of(context).size.width);
+                          },
                         ),
-                        splashColor: Colors.blue,
-                        padding: EdgeInsets.all(0.0),
-                      ),
-                      Spacer(
-                        flex: 2,
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.share), //share button ONpressed
-                        onPressed: () {},
-                        splashColor: Colors.blue,
-                        splashRadius: 40,
-                      ),
-                    ],
+                        InkWell(
+                          child: Icon(
+                            Icons.share,
+                            color: Colors.blue,
+                          ),
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
-          Row(
+          Column(
             children: [
-              SizedBox(
-                width: 20.0,
-              ),
-              Material(
-                borderRadius: BorderRadius.circular(15),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(15),
-                  onTap: () {
-                    print(
-                        ' Redirect to Playstore'); //Place the code here to redirect the user to playstore
-                  },
-                  splashColor: Colors.blue,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        width: 1.0,
-                        color: Colors.grey[350],
-                      ),
-                    ),
-                    height: 100,
-                    width: 190,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: FlatButton.icon(
-                            onPressed: () {},
-                            icon: Icon(FontAwesome.cart_plus),
-                            label: Text(
-                              'More Apps',
-                              style: GoogleFonts.aBeeZee(
-                                color: Colors.grey[900],
-                                fontWeight: FontWeight.bold,
-                              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 5,
+                          top: 10,
+                          left: 10,
+                          right: 5,
+                        ),
+                        child: Container(
+                          width: (MediaQuery.of(context).size.width - 30) / 2,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey[300],
                             ),
-                            splashColor: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.shopping_cart,
+                                    color: Colors.blue,
+                                  ),
+                                  Text("More Apps"),
+                                ],
+                              ),
+                              Padding(padding: EdgeInsets.all(5)),
+                              Text(
+                                "Check other apps published on Google Play Store",
+                                textAlign: TextAlign.left,
+                              )
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Wrap(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 5,
+                          top: 5,
+                          left: 10,
+                          right: 5,
+                        ),
+                        child: Container(
+                          width: (MediaQuery.of(context).size.width - 30) / 2,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey[300],
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
                             children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.clear_all,
+                                    color: Colors.blue,
+                                  ),
+                                  Text("Clear Cache"),
+                                ],
+                              ),
+                              Padding(padding: EdgeInsets.all(5)),
                               Text(
-                                'Check other apps published on Google Play Store.',
+                                "Click here to remove your app cache",
                                 textAlign: TextAlign.left,
-                                style: GoogleFonts.sourceSansPro(
-                                  fontSize: 15.0,
-                                  color: Colors.black,
-                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 10,
+                          top: 5,
+                          left: 10,
+                          right: 5,
+                        ),
+                        child: Container(
+                          width: (MediaQuery.of(context).size.width - 30) / 2,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey[300],
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.info,
+                                    color: Colors.blue,
+                                  ),
+                                  Text("About"),
+                                ],
+                              ),
+                              Padding(padding: EdgeInsets.all(5)),
+                              Text(
+                                "More info about Sharestapp",
+                                textAlign: TextAlign.left,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 5,
+                          top: 10,
+                          left: 5,
+                          right: 10,
+                        ),
+                        child: Container(
+                          width: (MediaQuery.of(context).size.width - 30) / 2,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey[300],
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "30",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 70),
+                                  ),
+                                ],
+                              ),
+                              Padding(padding: EdgeInsets.all(5)),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    Icons.share,
+                                    color: Colors.blue,
+                                  ),
+                                  Text("Images shared"),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 60.0,
-              ),
-              Material(
-                borderRadius: BorderRadius.circular(15),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(15),
-                  onTap: () {}, //redirecttoplaystore.
-                  splashColor: Colors.blue,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        width: 1.0,
-                        color: Colors.grey[350],
                       ),
-                    ),
-                    height: 100,
-                    width: 190,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: FlatButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.share),
-                            label: Text(
-                              'Images Shared',
-                              style: GoogleFonts.aBeeZee(
-                                color: Colors.grey[900],
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            splashColor: Colors.lightBlue,
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 10,
+                          top: 5,
+                          left: 5,
+                          right: 10,
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 30.0,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 20.0,
-              ),
-              Material(
-                borderRadius: BorderRadius.circular(15),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(15),
-                  onTap: () async {
-                    await DefaultCacheManager().emptyCache();
-                  }, //cache
-                  splashColor: Colors.blue,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        width: 1.0,
-                        color: Colors.grey[350],
-                      ),
-                    ),
-                    height: 100,
-                    width: 190,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: FlatButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.cached),
-                            label: Text(
-                              'Clear Cache',
-                              style: GoogleFonts.aBeeZee(
-                                color: Colors.grey[900],
-                                fontWeight: FontWeight.bold,
-                              ),
+                        child: Container(
+                          width: (MediaQuery.of(context).size.width - 30) / 2,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey[300],
                             ),
-                            splashColor: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Wrap(
+                          child: Column(
                             children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.code,
+                                    color: Colors.blue,
+                                  ),
+                                  Text("Developers"),
+                                ],
+                              ),
+                              Padding(padding: EdgeInsets.all(5)),
                               Text(
-                                'Click here to remove your App Cache.',
+                                "Click here to know about the developers",
                                 textAlign: TextAlign.left,
-                                style: GoogleFonts.sourceSansPro(
-                                  fontSize: 15.0,
-                                  color: Colors.black,
-                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 60.0,
-              ),
-              Material(
-                borderRadius: BorderRadius.circular(15),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(15),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/aboutus');
-                  },
-                  splashColor: Colors.blue,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        width: 1.0,
-                        color: Colors.grey[350],
                       ),
-                    ),
-                    height: 100,
-                    width: 190,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: FlatButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.code),
-                            label: Text(
-                              'Developers',
-                              style: GoogleFonts.aBeeZee(
-                                color: Colors.grey[900],
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            splashColor: Colors.lightBlue,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Wrap(
-                            children: [
-                              Text(
-                                'Click here to know About the Devs of Sharestapp.',
-                                textAlign: TextAlign.left,
-                                style: GoogleFonts.sourceSansPro(
-                                  fontSize: 15.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
-                ),
+                ],
               ),
             ],
           ),
