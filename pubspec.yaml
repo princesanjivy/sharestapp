@@ -29,7 +29,7 @@ dependencies:
   flutter_cache_manager: ^2.0.0
   path_provider: ^1.6.22
   image: ^2.1.18
-  image_gallery_saver: ^1.6.1
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +48,13 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/macclear.jpeg
+    - assets/both.jpeg
+    - assets/lab.jpg
+    - assets/san.jpg
+    - assets/icons/globe.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -64,5 +71,6 @@ flutter:
     - family: FontAwesome
       fonts:
         - asset: assets/icons/FontAwesome.ttf
+        - asset: assets/icons/Font-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
