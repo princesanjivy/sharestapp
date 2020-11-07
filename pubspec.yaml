@@ -29,7 +29,7 @@ dependencies:
   flutter_cache_manager: ^2.0.0
   path_provider: ^1.6.22
   image: ^2.1.18
-  url_launcher: ^5.7.10
+  url_launcher: 
 
 dev_dependencies:
   flutter_test:
