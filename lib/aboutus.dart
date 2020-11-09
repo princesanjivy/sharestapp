@@ -1,4 +1,10 @@
-import 'package:flutter/gestures.dart';
+/**
+ * @author Vignesh Hendrix
+ * @email sanjivy.android@gmail.com
+ * @create date 2020-11-10 01:44:06
+ * @modify date 2020-11-10 01:44:06
+ * @desc [description]
+ */
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sharestapp/font_awesome_icons.dart';
@@ -12,7 +18,7 @@ void redirect(String url) async {
       forceWebView: false,
     );
   } else {
-    throw 'Sorry,could not launch $url';
+    print('Sorry,could not launch $url');
   }
 }
 
@@ -20,7 +26,7 @@ void _launchMail(String email) async {
   if (await canLaunch("mailto:$email")) {
     await launch("mailto:$email");
   } else {
-    throw 'Could not launch';
+    print('Could not launch');
   }
 }
 
@@ -57,9 +63,9 @@ class _AboutUsState extends State<AboutUs> {
                 child: Container(
                   child: CircleAvatar(
                     backgroundImage: AssetImage(
-                      'assets/san.jpg',
+                      'assets/sanjivy.jpg',
                     ),
-                    radius: 80.0,
+                    radius: 65.0,
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -134,7 +140,7 @@ class _AboutUsState extends State<AboutUs> {
                   ),
                   IconButton(
                     onPressed: () {
-                      redirect('https://www.facebook.com/princesanjivy');
+                      redirect('https://www.facebook.com/PrinceSanjivy');
                     },
                     icon: Icon(
                       FontAwesome.facebook_official,
@@ -185,9 +191,9 @@ class _AboutUsState extends State<AboutUs> {
                 child: Container(
                   child: CircleAvatar(
                     backgroundImage: AssetImage(
-                      'assets/macclear.jpeg',
+                      'assets/vignesh.jpeg',
                     ),
-                    radius: 80.0,
+                    radius: 65.0,
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
