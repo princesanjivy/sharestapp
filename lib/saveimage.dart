@@ -1,3 +1,9 @@
+/**
+ * @author Prince Sanjivy
+ * @email sanjivy.android@gmail.com
+ * @create date 2020-11-10 01:48:10
+ * @modify date 2020-11-10 01:48:10
+ */
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';

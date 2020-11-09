@@ -1,3 +1,9 @@
+/**
+ * @author Prince Sanjivy, Vignesh Hendrix
+ * @email sanjivy.android@gmail.com, 
+ * @create date 2020-11-10 01:49:28
+ * @modify date 2020-11-10 01:49:28
+ */
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -54,10 +60,12 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
         return Card(
           elevation: 4,
           child: GridTile(
-            child: Image.file(
-              myfile,
-              fit: BoxFit.cover,
-            ),
+            child: myfile == null
+                ? CircularProgressIndicator()
+                : Image.file(
+                    myfile,
+                    fit: BoxFit.cover,
+                  ),
             footer: Container(
               color: Colors.white30,
               alignment: Alignment.centerRight,

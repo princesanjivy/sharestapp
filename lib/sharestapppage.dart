@@ -1,3 +1,10 @@
+/**
+ * @author Prince Sanjivy, Vignesh Hendrix
+ * @email sanjivy.android@gmail.com, 
+ * @create date 2020-11-10 01:48:26
+ * @modify date 2020-11-10 01:48:26
+ * @desc [description]
+ */
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -16,26 +23,48 @@ class MySharestappPage extends StatefulWidget {
 
 class _MySharestappPageState extends State<MySharestappPage> {
   List files = new List();
+  bool _notcreated = true;
   var show;
+  var _savedpath = "/storage/emulated/0/Pictures/Sharestapp";
 
   @override
   void initState() {
     super.initState();
 
-    setState(() {
-      files = Directory("/storage/emulated/0/Pictures/Sharestapp")
-          .listSync()
-          .map((item) => item.path)
-          .where((item) => item.endsWith(".jpg"))
-          .toList();
+    _checkDirExists();
+  }
 
-      show = files.length;
-    });
+  _checkDirExists() async {
+    bool exists = await Directory(_savedpath).exists();
+
+    if (exists) {
+      print("Exists");
+      if (this.mounted)
+        setState(() {
+          _notcreated = !_notcreated;
+
+          files = Directory(_savedpath)
+              .listSync()
+              .map((item) => item.path)
+              .where((item) => item.endsWith(".jpg"))
+              .toList();
+
+          show = files.length;
+        });
+    } else {
+      print("Nope");
+      if (this.mounted) setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return show == 0
+    return _notcreated
         ? Center(
             child: Text("No images yet saved!"),
           )
