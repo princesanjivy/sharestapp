@@ -1,5 +1,6 @@
-/**
+/*
  * @author Prince Sanjivy, Vignesh Hendrix
+ * @email vigneshvicky8384@gmail.com,
  * @email sanjivy.android@gmail.com, 
  * @create date 2020-11-10 01:49:28
  * @modify date 2020-11-10 01:49:28

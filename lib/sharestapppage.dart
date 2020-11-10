@@ -1,5 +1,6 @@
-/**
+/* 
  * @author Prince Sanjivy, Vignesh Hendrix
+ * @email vigneshvicky8384@gmail.com,
  * @email sanjivy.android@gmail.com, 
  * @create date 2020-11-10 01:48:26
  * @modify date 2020-11-10 01:48:26
@@ -8,10 +9,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
-import 'package:sharestapp/saveimage.dart';
 import 'package:sharestapp/shareimage.dart';
 
 class MySharestappPage extends StatefulWidget {
