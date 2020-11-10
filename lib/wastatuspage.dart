@@ -1,11 +1,19 @@
+/*
+ * @author Prince Sanjivy, Vignesh Hendrix
+ * @email vigneshvicky8384@gmail.com,
+ * @email sanjivy.android@gmail.com, 
+ * @create date 2020-11-10 01:49:28
+ * @modify date 2020-11-10 01:49:28
+ */
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
+import 'package:sharestapp/ads.dart';
 import 'package:sharestapp/saveimage.dart';
 import 'package:sharestapp/shareimage.dart';
+// import 'package:admob_flutter/admob_flutter.dart';
 
 class MyWAStatusPage extends StatefulWidget {
   const MyWAStatusPage({Key key}) : super(key: key);
@@ -16,10 +24,20 @@ class MyWAStatusPage extends StatefulWidget {
 
 class _MyWAStatusPageState extends State<MyWAStatusPage> {
   List files = new List();
+  // AdmobInterstitial interstitialAd;
 
   @override
   void initState() {
     super.initState();
+
+    // interstitialAd = AdmobInterstitial(
+    //   adUnitId: "ca-app-pub-3940256099942544/1033173712",
+    //   listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+    //     if (event == AdmobAdEvent.closed) {
+    //       interstitialAd.load();
+    //     }
+    //   },
+    // );
 
     setState(() {
       files = Directory("/storage/emulated/0/WhatsApp/Media/.Statuses")
@@ -43,10 +61,12 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
         return Card(
           elevation: 4,
           child: GridTile(
-            child: Image.file(
-              myfile,
-              fit: BoxFit.cover,
-            ),
+            child: myfile == null
+                ? CircularProgressIndicator()
+                : Image.file(
+                    myfile,
+                    fit: BoxFit.cover,
+                  ),
             footer: Container(
               color: Colors.white30,
               alignment: Alignment.centerRight,
@@ -79,9 +99,13 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
                       Icons.save_alt,
                       color: Colors.black87,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       SaveImageToDir(myfile).saveImageToDir();
-                      SnackBar(content: Text("Image Saved!"));
+                      InterstitialAd().showAd();
+                      // if (await interstitialAd.isLoaded) {
+                      //   interstitialAd.show();
+                      // }
+                      // SnackBar(content: Text("Image Saved!"));
                     },
                   ),
                 ],
