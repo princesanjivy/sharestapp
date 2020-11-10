@@ -1,7 +1,6 @@
 /*
  * @author Vignesh Hendrix
- * @email vigneshvicky8384@gmail.com,
- * @email sanjivy.android@gmail.com
+ * @email vigneshvicky8384@gmail.com
  * @create date 2020-11-10 01:47:53
  * @modify date 2020-11-10 01:47:53
  */

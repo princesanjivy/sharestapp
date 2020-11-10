@@ -1,7 +1,6 @@
 /*
  * @author Prince Sanjivy, Vignesh Hendrix
- * @email vigneshvicky8384@gmail.com,
- * @email sanjivy.android@gmail.com, 
+ * @email sanjivy.android@gmail.com, vigneshvicky8384@gmail.com
  * @create date 2020-11-10 01:49:28
  * @modify date 2020-11-10 01:49:28
  */
@@ -13,7 +12,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sharestapp/ads.dart';
 import 'package:sharestapp/saveimage.dart';
 import 'package:sharestapp/shareimage.dart';
-// import 'package:admob_flutter/admob_flutter.dart';
 
 class MyWAStatusPage extends StatefulWidget {
   const MyWAStatusPage({Key key}) : super(key: key);
