@@ -1,9 +1,11 @@
-/**
+/*
  * @author Vignesh Hendrix
+ * @email vigneshvicky8384@gmail.com,
  * @email sanjivy.android@gmail.com
  * @create date 2020-11-10 01:47:53
  * @modify date 2020-11-10 01:47:53
  */
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sharestapp/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:sharestapp/sharevideopage.dart';
@@ -24,8 +26,10 @@ class _MyTabViewState extends State<MyTabView> {
         appBar: AppBar(
           title: Text(
             'Sharestapp',
-            style: TextStyle(
-              fontSize: 26.5,
+            style: GoogleFonts.quicksand(
+              fontWeight: FontWeight.bold,
+              fontSize: 30.0,
+              color: Colors.white,
             ),
           ),
           elevation: 3.0,

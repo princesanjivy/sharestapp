@@ -38,11 +38,22 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    final iconcol = Color(0xFFE84A5F);
+    final barcol = Color(0xFFE84A5F);
+    final textcol = Color(0xFF2A363B);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(
-          Theme.of(context).textTheme,
+        textTheme: GoogleFonts.quicksandTextTheme(
+          Theme.of(context).textTheme.apply(
+                bodyColor: textcol,
+              ),
+        ),
+        primaryColor: barcol,
+        scaffoldBackgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: iconcol,
         ),
       ),
       home: MyTabView(),

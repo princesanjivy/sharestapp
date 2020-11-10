@@ -7,9 +7,6 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:sharestapp/aboutus.dart';
-import 'package:sharestapp/font_awesome_icons.dart';
 import 'package:sharestapp/getimage.dart';
 import 'dart:async';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
@@ -148,15 +145,15 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(
-                top: 10,
-                right: 10,
-                left: 10,
+                top: 20,
+                right: 20,
+                left: 20,
                 bottom: 10,
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                  width: 1,
-                  color: Colors.grey[200],
+                  width: 0.95,
+                  color: Colors.grey[300],
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -165,6 +162,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     con,
                     textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -174,18 +175,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          // radius: 3,
+                          radius: 90.0,
+                          splashColor: Colors.red,
+                          borderRadius: BorderRadius.circular(30.0),
                           child: Row(
                             children: [
                               Icon(
-                                Icons.star,
-                                color: Colors.blue,
+                                Icons.star_rounded,
                                 size: 30,
                               ),
-                              Text(
-                                "Rate & Review",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: Text(
+                                  "Rate & Review",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],
@@ -194,14 +199,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             print(MediaQuery.of(context).size.width);
                           },
                         ),
-                        InkWell(
-                          splashColor: Colors.blue[100],
-                          child: Icon(
-                            Icons.share_rounded,
-                            color: Colors.blue,
+                        IconButton(
+                          splashRadius: 40.0,
+                          splashColor: Colors.red,
+                          icon: Icon(
+                            Icons.share,
                           ),
-                          onTap: () {},
-                        ),
+                          onPressed: () {},
+                        )
                       ],
                     ),
                   )
@@ -230,15 +235,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                 "https://play.google.com/store/apps/dev?id=6439925551269057866");
                           },
                           borderRadius: BorderRadius.circular(10),
-                          highlightColor: Colors.blue[200],
-                          splashColor: Colors.blue[200],
+                          highlightColor: Colors.red[200],
+                          splashColor: Colors.red,
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 1,
-                                color: Colors.grey[200],
+                                width: 0.95,
+                                color: Colors.grey[300],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -248,12 +253,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: [
                                     Icon(
                                       Icons.shopping_cart,
-                                      color: Colors.blue,
                                     ),
-                                    Text(
-                                      "More Apps",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 6.0),
+                                      child: Text(
+                                        "More Apps",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -262,6 +269,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text(
                                   "Check other apps published on Google Play Store",
                                   textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 )
                               ],
                             ),
@@ -280,15 +290,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             //[TODO]
                           },
                           borderRadius: BorderRadius.circular(10),
-                          highlightColor: Colors.blue[200],
-                          splashColor: Colors.blue[200],
+                          highlightColor: Colors.red[200],
+                          splashColor: Colors.red,
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 1,
-                                color: Colors.grey[200],
+                                width: 0.95,
+                                color: Colors.grey[300],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -297,13 +307,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Row(
                                   children: [
                                     Icon(
-                                      Icons.clear_all,
-                                      color: Colors.blue,
+                                      Icons.cached,
                                     ),
-                                    Text(
-                                      "Clear Cache",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 6.0),
+                                      child: Text(
+                                        "Clear Cache",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -312,6 +324,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text(
                                   "Click here to remove your app cache",
                                   textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 )
                               ],
                             ),
@@ -328,15 +343,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: InkWell(
                           onTap: () {},
                           borderRadius: BorderRadius.circular(10),
-                          highlightColor: Colors.blue[200],
-                          splashColor: Colors.blue[200],
+                          highlightColor: Colors.red[200],
+                          splashColor: Colors.red,
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 1,
-                                color: Colors.grey[200],
+                                width: 0.95,
+                                color: Colors.grey[300],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -345,21 +360,37 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Row(
                                   children: [
                                     Icon(
-                                      Icons.info,
-                                      color: Colors.blue,
+                                      Icons.info_outline,
+                                      size: 20.0,
                                     ),
-                                    Text(
-                                      "About",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 7.0),
+                                      child: Text(
+                                        "About",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                Padding(padding: EdgeInsets.all(5)),
-                                Text(
-                                  "More info about Sharestapp",
-                                  textAlign: TextAlign.left,
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 3.0,
+                                        top: 3.0,
+                                        bottom: 1.0,
+                                      ),
+                                      child: Text(
+                                        "More info about Sharestapp",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -382,8 +413,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              width: 1,
-                              color: Colors.grey[200],
+                              width: 0.95,
+                              color: Colors.grey[300],
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -405,9 +436,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: [
                                   // Icon(
                                   //   Icons.share,
-                                  //   color: Colors.blue,
+                                  //   color: Colors.red,
                                   // ),
-                                  Text("Images shared"),
+                                  Text(
+                                    "Images shared",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -430,15 +466,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             // });
                           },
                           borderRadius: BorderRadius.circular(10),
-                          highlightColor: Colors.blue[200],
-                          splashColor: Colors.blue[200],
+                          highlightColor: Colors.red[200],
+                          splashColor: Colors.red,
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 1,
-                                color: Colors.grey[200],
+                                width: 0.95,
+                                color: Colors.grey[300],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -449,12 +485,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: [
                                     Icon(
                                       Icons.code,
-                                      color: Colors.blue,
                                     ),
-                                    Text(
-                                      "Developers",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5.0),
+                                      child: Text(
+                                        "Developers",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -463,6 +501,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text(
                                   "Click here to know about the developers",
                                   textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ],
                             ),

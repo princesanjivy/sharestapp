@@ -1,14 +1,15 @@
-/**
+/*
  * @author Vignesh Hendrix
  * @email sanjivy.android@gmail.com
+ * @email vigneshvicky8384@gmail.com,
  * @create date 2020-11-10 01:44:06
  * @modify date 2020-11-10 01:44:06
  * @desc [description]
  */
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sharestapp/font_awesome_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void redirect(String url) async {
   if (await canLaunch(url)) {
@@ -39,279 +40,280 @@ class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Developers',
-          style: GoogleFonts.actor(
+          style: GoogleFonts.quicksand(
             fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-            letterSpacing: 1.0,
           ),
         ),
-        backgroundColor: Colors.blueAccent,
         elevation: 5.0,
       ),
       body: ListView(
         children: [
           Column(
             children: [
-              SizedBox(
-                height: 30.0,
-              ),
-              Center(
-                child: Container(
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(
-                      'assets/sanjivy.jpg',
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 50.0,
+                ),
+                child: Center(
+                  child: Container(
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(
+                        'assets/sanjivy.jpg',
+                      ),
+                      radius: 70.0,
                     ),
-                    radius: 65.0,
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15.0,
-              ),
-              Text(
-                'Prince Sanjivy',
-                style: GoogleFonts.raleway(
-                    fontSize: 30.0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15.0,
+                ),
+                child: Text(
+                  'Prince Sanjivy',
+                  style: TextStyle(
+                    fontSize: 25.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-              SizedBox(
-                height: 15.0,
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 20.0,
                   right: 20.0,
+                  top: 15.0,
                 ),
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
+                    style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: 13.0,
+                    ),
                     children: [
                       TextSpan(
-                        text: '"A Passionate Coder in ',
-                        style: GoogleFonts.sourceSansPro(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                        ),
+                        text: '"A passionate coder in ',
                       ),
                       TextSpan(
                         text: 'Python ',
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
                           color: Colors.blue,
-                          fontSize: 16.0,
                         ),
                       ),
                       TextSpan(
                         text:
-                            'who loves to build apps and games for Android and Web."',
-                        style: GoogleFonts.sourceSansPro(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                        ),
+                            ' who loves to build apps and games for Android and Web."',
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15.0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 13.0,
+                  right: 13.0,
+                  top: 13.0,
+                ),
+                child: ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        redirect('https://github.com/princesanjivy');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.github,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        redirect('https://www.facebook.com/PrinceSanjivy');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.facebook,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        redirect('sanjivy.android@gmail.com');
+                      },
+                      icon: Icon(
+                        Icons.email_outlined,
+                        color: Colors.grey[700],
+                        size: 35.0,
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        _launchMail('https://www.instagram.com/princesanjivy/');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.instagram,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        redirect('https://princesanjivy.github.io/portfolio/');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.globeAmericas,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
               ),
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      redirect('https://github.com/princesanjivy');
-                    },
-                    icon: Icon(
-                      FontAwesome.github_circled,
-                      size: 30.0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 40.0,
+                ),
+                child: Center(
+                  child: Container(
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(
+                        'assets/vignesh.jpeg',
+                      ),
+                      radius: 70.0,
                     ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      redirect('https://www.facebook.com/PrinceSanjivy');
-                    },
-                    icon: Icon(
-                      FontAwesome.facebook_official,
-                      size: 28.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
                     ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      _launchMail('sanjivy.android@gmail.com');
-                    },
-                    icon: Icon(
-                      FontAwesome.mail,
-                      size: 28.0,
-                    ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      redirect('https://www.instagram.com/princesanjivy/');
-                    },
-                    icon: Icon(
-                      FontAwesome.instagram,
-                      size: 28.0,
-                    ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      redirect('https://princesanjivy.github.io/portfolio/');
-                    },
-                    icon: Icon(
-                      FontAwesome.globe,
-                      size: 30.0,
-                    ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Center(
-                child: Container(
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(
-                      'assets/vignesh.jpeg',
-                    ),
-                    radius: 65.0,
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15.0,
-              ),
-              Text(
-                'Vignesh Hendrix',
-                style: GoogleFonts.raleway(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15.0,
                 ),
-              ),
-              SizedBox(
-                height: 15.0,
+                child: Text(
+                  'Vignesh Hendrix',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 20.0,
                   right: 20.0,
+                  top: 15.0,
                 ),
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
+                    style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: 13.0,
+                    ),
                     children: [
                       TextSpan(
-                        text:
-                            '"An Intermediate level Competitive Programmer in ',
-                        style: GoogleFonts.sourceSansPro(
-                            fontSize: 16.0, color: Colors.black),
-                      ),
-                      TextSpan(
-                        text: 'C++',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 16.0,
-                          color: Colors.blue,
-                        ),
+                        text: '"An Intermediate level Competitive Programmer',
                       ),
                       TextSpan(
                         text: ',Problem Solver, and a Front End developer."',
-                        style: GoogleFonts.sourceSansPro(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15.0,
-              ),
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      redirect('https://github.com/VigneshHendrix');
-                    },
-                    icon: Icon(
-                      FontAwesome.github_circled,
-                      size: 30.0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 13.0,
+                  right: 13.0,
+                  top: 13.0,
+                ),
+                child: ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        redirect('https://github.com/VigneshHendrix');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.github,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
                     ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      redirect(
-                          'https://www.facebook.com/profile.php?id=100012796634175');
-                    },
-                    icon: Icon(
-                      FontAwesome.facebook_official,
-                      size: 28.0,
+                    IconButton(
+                      onPressed: () {
+                        redirect(
+                            'https://www.facebook.com/profile.php?id=100012796634175');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.facebook,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
                     ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      _launchMail('vigneshvicky8384@gmail.com');
-                    },
-                    icon: Icon(
-                      FontAwesome.mail,
-                      size: 28.0,
+                    IconButton(
+                      onPressed: () {
+                        _launchMail('vigneshvicky8384@gmail.com');
+                      },
+                      icon: Icon(
+                        Icons.email_outlined,
+                        color: Colors.grey[700],
+                        size: 35.0,
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
                     ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      redirect('https://www.instagram.com/vignesh_hendrix/');
-                    },
-                    icon: Icon(
-                      FontAwesome.instagram,
-                      size: 28.0,
+                    IconButton(
+                      onPressed: () {
+                        redirect('https://www.instagram.com/vignesh_hendrix/');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.instagram,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
                     ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      redirect(
-                          'https://www.linkedin.com/in/vignesh-k-53a0651b1/');
-                    },
-                    icon: Icon(
-                      FontAwesome.linkedin_squared,
-                      size: 28.0,
+                    IconButton(
+                      onPressed: () {
+                        redirect(
+                            'https://www.linkedin.com/in/vignesh-k-53a0651b1/');
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.linkedin,
+                        size: 30.0,
+                        color: Colors.grey[700],
+                      ),
+                      splashColor: Colors.blue,
+                      color: Colors.black,
                     ),
-                    splashColor: Colors.blue,
-                    color: Colors.black,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

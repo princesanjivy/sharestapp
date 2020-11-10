@@ -31,6 +31,8 @@ dependencies:
   flutter_cache_manager: ^2.0.0
   image: ^2.1.18
   url_launcher: 
+  font_awesome_flutter: ^8.10.0
+
 
 # dev_dependencies:
 #   flutter_test:
