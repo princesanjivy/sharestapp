@@ -1,5 +1,5 @@
 name: sharestapp
-description: I'll make it Simple
+description: I'll make it simple
 
 #  * @author Prince Sanjivy, Vignesh Hendrix
 
@@ -17,7 +17,7 @@ description: I'll make it Simple
 # as your whatsapp status and also share to your whatsapp contacts. Sharestapp will make your task
 # simple and easier.
 
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -32,6 +32,12 @@ dependencies:
   image: ^2.1.18
   url_launcher: 
   font_awesome_flutter: ^8.10.0
+  shared_preferences: ^0.5.12+4
+  path_provider: ^1.6.24
+  permission_handler: ^5.0.1+1
+  video_player: ^1.0.1
+  better_player: ^0.0.34
+  video_thumbnail: ^0.2.4
 
 
 # dev_dependencies:
@@ -45,3 +51,4 @@ flutter:
   assets:
     - assets/vignesh.jpeg
     - assets/sanjivy.jpg
+    - assets/icon.png

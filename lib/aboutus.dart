@@ -1,10 +1,8 @@
 /*
  * @author Vignesh Hendrix
- * @email sanjivy.android@gmail.com
  * @email vigneshvicky8384@gmail.com,
  * @create date 2020-11-10 01:44:06
  * @modify date 2020-11-10 01:44:06
- * @desc [description]
  */
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,14 +21,6 @@ void redirect(String url) async {
   }
 }
 
-void _launchMail(String email) async {
-  if (await canLaunch("mailto:$email")) {
-    await launch("mailto:$email");
-  } else {
-    print('Could not launch');
-  }
-}
-
 class AboutUs extends StatefulWidget {
   @override
   _AboutUsState createState() => _AboutUsState();
@@ -43,11 +33,8 @@ class _AboutUsState extends State<AboutUs> {
       appBar: AppBar(
         title: Text(
           'Developers',
-          style: GoogleFonts.quicksand(
-            fontWeight: FontWeight.bold,
-          ),
         ),
-        elevation: 5.0,
+        // elevation: 5.0,
       ),
       body: ListView(
         children: [
@@ -63,7 +50,8 @@ class _AboutUsState extends State<AboutUs> {
                       backgroundImage: AssetImage(
                         'assets/sanjivy.jpg',
                       ),
-                      radius: 70.0,
+                      backgroundColor: Colors.white,
+                      radius: 65.0,
                     ),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -77,9 +65,10 @@ class _AboutUsState extends State<AboutUs> {
                 ),
                 child: Text(
                   'Prince Sanjivy',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.quicksand(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFFE84A5F),
                   ),
                 ),
               ),
@@ -93,8 +82,8 @@ class _AboutUsState extends State<AboutUs> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: GoogleFonts.montserrat(
-                      color: Colors.black,
                       fontSize: 13.0,
+                      color: Colors.grey[800],
                     ),
                     children: [
                       TextSpan(
@@ -104,7 +93,7 @@ class _AboutUsState extends State<AboutUs> {
                         text: 'Python ',
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
-                          color: Colors.blue,
+                          color: Colors.red[200],
                         ),
                       ),
                       TextSpan(
@@ -130,11 +119,11 @@ class _AboutUsState extends State<AboutUs> {
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.github,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                     IconButton(
                       onPressed: () {
@@ -142,35 +131,23 @@ class _AboutUsState extends State<AboutUs> {
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.facebook,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                     IconButton(
                       onPressed: () {
-                        redirect('sanjivy.android@gmail.com');
-                      },
-                      icon: Icon(
-                        Icons.email_outlined,
-                        color: Colors.grey[700],
-                        size: 35.0,
-                      ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _launchMail('https://www.instagram.com/princesanjivy/');
+                        redirect('https://www.instagram.com/princesanjivy/');
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.instagram,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                     IconButton(
                       onPressed: () {
@@ -178,11 +155,11 @@ class _AboutUsState extends State<AboutUs> {
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.globeAmericas,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                   ],
                 ),
@@ -197,7 +174,8 @@ class _AboutUsState extends State<AboutUs> {
                       backgroundImage: AssetImage(
                         'assets/vignesh.jpeg',
                       ),
-                      radius: 70.0,
+                      backgroundColor: Colors.white,
+                      radius: 65.0,
                     ),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -211,9 +189,10 @@ class _AboutUsState extends State<AboutUs> {
                 ),
                 child: Text(
                   'Vignesh Hendrix',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.quicksand(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFFE84A5F),
                   ),
                 ),
               ),
@@ -227,15 +206,15 @@ class _AboutUsState extends State<AboutUs> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: GoogleFonts.montserrat(
-                      color: Colors.black,
                       fontSize: 13.0,
+                      color: Colors.grey[800],
                     ),
                     children: [
                       TextSpan(
-                        text: '"An Intermediate level Competitive Programmer',
+                        text: '"An intermediate level competitive programmer',
                       ),
                       TextSpan(
-                        text: ',Problem Solver, and a Front End developer."',
+                        text: ', Problem solver, and a Front end Developer."',
                       ),
                     ],
                   ),
@@ -256,11 +235,11 @@ class _AboutUsState extends State<AboutUs> {
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.github,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                     IconButton(
                       onPressed: () {
@@ -269,23 +248,11 @@ class _AboutUsState extends State<AboutUs> {
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.facebook,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _launchMail('vigneshvicky8384@gmail.com');
-                      },
-                      icon: Icon(
-                        Icons.email_outlined,
-                        color: Colors.grey[700],
-                        size: 35.0,
-                      ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                     IconButton(
                       onPressed: () {
@@ -293,11 +260,11 @@ class _AboutUsState extends State<AboutUs> {
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.instagram,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                     IconButton(
                       onPressed: () {
@@ -306,11 +273,11 @@ class _AboutUsState extends State<AboutUs> {
                       },
                       icon: FaIcon(
                         FontAwesomeIcons.linkedin,
-                        size: 30.0,
+                        size: 25.0,
                         color: Colors.grey[700],
                       ),
-                      splashColor: Colors.blue,
-                      color: Colors.black,
+                      splashColor: Colors.red[200],
+                      highlightColor: Colors.red[200],
                     ),
                   ],
                 ),

@@ -5,6 +5,7 @@
  * @modify date 2020-11-10 01:48:10
  */
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 
@@ -31,6 +32,28 @@ class SaveImageToDir {
     try {
       String result =
           await platform.invokeMethod("saveimage", {"file": myfile.path});
+      print(result);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+
+  void saveVideoToDir() async {
+    var dir = "/storage/emulated/0/Pictures";
+
+    var vidir = await Directory('$dir/Sharestapp').create(recursive: true);
+    path = file.path.toString();
+    print(path);
+    path = path.substring(path.lastIndexOf("/"), path.length);
+    print(path);
+
+    Uint8List bytes = file.readAsBytesSync();
+    final f = File("${vidir.path}$path")..writeAsBytesSync(bytes);
+    print(f);
+
+    try {
+      String result =
+          await platform.invokeMethod("saveimage", {"file": file.path});
       print(result);
     } on PlatformException catch (e) {
       print(e);

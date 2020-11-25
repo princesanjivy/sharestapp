@@ -31,6 +31,12 @@
 .pub/
 /build/
 
+#keyfile
+/android/keystore.jks
+/android/key.properties
+/android/app/keystore.jks
+/android/app/key.properties
+
 # Web related
 lib/generated_plugin_registrant.dart
 

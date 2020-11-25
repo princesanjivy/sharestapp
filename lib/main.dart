@@ -20,13 +20,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
+import 'dart:ui';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sharestapp/mytabview.dart';
 import 'package:flutter/material.dart';
 import 'package:sharestapp/aboutus.dart';
 
 void main() {
-  // Admob.initialize();
   runApp(MyApp());
 }
 
@@ -38,22 +39,42 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final iconcol = Color(0xFFE84A5F);
-    final barcol = Color(0xFFE84A5F);
-    final textcol = Color(0xFF2A363B);
+    final iconColor = Color(0xFFE84A5F);
+    final appbarColor = Color(0xFFE84A5F);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.quicksandTextTheme(
+        textTheme: GoogleFonts.montserratTextTheme(
           Theme.of(context).textTheme.apply(
-                bodyColor: textcol,
+                bodyColor: Colors.grey[800],
               ),
         ),
-        primaryColor: barcol,
+        primaryColor: appbarColor,
+        accentColor: appbarColor,
+        appBarTheme: AppBarTheme(
+          textTheme: GoogleFonts.quicksandTextTheme(
+            Theme.of(context).textTheme.apply(
+                  bodyColor: Colors.white,
+                ),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            overlayColor: MaterialStateProperty.all<Color>(Colors.red[200]),
+            // foregroundColor: MaterialStateProperty.all<Color>(appbarColor),
+            backgroundColor: MaterialStateProperty.all<Color>(appbarColor),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            overlayColor: MaterialStateProperty.all<Color>(Colors.red[200]),
+            foregroundColor: MaterialStateProperty.all<Color>(appbarColor),
+          ),
+        ),
         scaffoldBackgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: iconcol,
+          color: iconColor,
         ),
       ),
       home: MyTabView(),

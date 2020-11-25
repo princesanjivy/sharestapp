@@ -31,3 +31,18 @@ class ShareImage {
     }
   }
 }
+
+class ShareText{
+  String text;
+  static const platform = const MethodChannel("com.princeappstudio.saveimage");
+  ShareText(this.text);
+
+  void send() async {
+    try {
+      String result = await platform.invokeMethod("sharetext", {"text": text});
+      print(result);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+}

@@ -7,12 +7,15 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:sharestapp/getimage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharestapp/get_image_video.dart';
 import 'dart:async';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:sharestapp/saveimage.dart';
 import 'package:sharestapp/shareimage.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_player/video_player.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -29,40 +32,80 @@ class _MyHomePageState extends State<MyHomePage> {
   String con =
       "Sharestapp is an open source application that let's an end user to directly share an image/video from Instagram to other apps in an exact image/video format, and also allows the user to save in mobile's local storage.";
   var f;
+  var _controlText = "PLAY";
+  int imagesshared = 0;
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+  VideoPlayerController _controller;
+  Future<void> _videoPlayerFuture;
 
   @override
   void initState() {
     super.initState();
 
-    _intentDataStreamSubscription =
-        ReceiveSharingIntent.getTextStream().listen((String value) {
-      showLoadingDialog(context, _keyLoader);
+    _getShareCount().then((value) {
       setState(() {
-        _sharedText = value;
-        instaposturl = _sharedText;
-        instaposturl = instaposturl.substring(
-            instaposturl.indexOf("ttps://") - 1,
-            instaposturl.indexOf("?igshid"));
-
-        print(instaposturl);
-        GetImageFromUrl(instaposturl).myimage().then((value) {
-          setState(() {
-            print(value);
-            _imageurl = value;
-            _saveImagetoCache(_imageurl);
-          });
-        });
+        imagesshared = value;
       });
-    }, onError: (err) {
-      print("getLinkStream error: $err");
     });
+
+    // _intentDataStreamSubscription =
+    //     ReceiveSharingIntent.getTextStream().listen((String value) {
+    //   showLoadingDialog(context, _keyLoader);
+    //   setState(() {
+    //     _sharedText = value;
+    //     instaposturl = _sharedText;
+    //     instaposturl = instaposturl.substring(
+    //         instaposturl.indexOf("ttps://") - 1,
+    //         instaposturl.indexOf("?igshid"));
+
+    //     print(instaposturl);
+    //     GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+    //       setState(() {
+    //         print(value);
+    //         _imageurl = value;
+
+    //         _saveImagetoCache(_imageurl);
+    //       });
+    //     });
+    //   });
+    // }, onError: (err) {
+    //   print("getLinkStream error: $err");
+    // });
+
+    // ReceiveSharingIntent.getInitialText().then((String value) {
+    //   setState(() {
+    //     _sharedText = value;
+    //     if (_sharedText != null) {
+    //       showLoadingDialog(context, _keyLoader);
+
+    //       instaposturl = _sharedText;
+    //       instaposturl = instaposturl.substring(
+    //           instaposturl.indexOf("ttps://") - 1,
+    //           instaposturl.indexOf("?igshid"));
+
+    //       print(instaposturl);
+    //       GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+    //         setState(() {
+    //           print(value);
+    //           _imageurl = value;
+
+    //           _saveImagetoCache(_imageurl);
+    //         });
+    //       });
+    //     }
+    //   });
+    // });
   }
 
   @override
   void dispose() {
     super.dispose();
-    _intentDataStreamSubscription.cancel();
+    // _intentDataStreamSubscription.cancel();
+    if (_controller != null) _controller.dispose();
+    // setState(() {
+    //   _sharedText = null;
+    // });
+    ReceiveSharingIntent.reset();
   }
 
   _saveImagetoCache(i) async {
@@ -70,13 +113,28 @@ class _MyHomePageState extends State<MyHomePage> {
       var myFile = await DefaultCacheManager().downloadFile(i);
       Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
       setState(() {
+        _sharedText = null;
+        ReceiveSharingIntent.reset();
         f = myFile;
-        _showDialog(f);
+
+        if (f.file.path.toString().endsWith("jpg")) {
+          print(f.file.path);
+          _showImageDialog(f);
+        } else {
+          print(f.file.path);
+
+          _controller = VideoPlayerController.file(f.file);
+          _videoPlayerFuture = _controller.initialize();
+          _controller.setLooping(true);
+          _controller.play();
+
+          _showVideoDialog(f);
+        }
       });
     }
   }
 
-  void _showDialog(var file) {
+  void _showImageDialog(var file) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -85,23 +143,72 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text("Share to WhatsApp"),
           content: Image.file(file.file),
           actions: <Widget>[
-            FlatButton(
-              child: Text("Save"),
+            TextButton(
               onPressed: () {
                 SaveImageToDir(file.file).saveImageToDir();
                 Navigator.of(context).pop();
               },
+              child: Text("SAVE"),
             ),
-            FlatButton(
-              child: Text("Share"),
+            TextButton(
+              child: Text("SHARE"),
               onPressed: () {
+                _setShareCount();
                 ShareImage(file.file.path).shareImage();
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
-              child: Text("Close"),
+            TextButton(
+              child: Text("CLOSE"),
               onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showVideoDialog(var file) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Share post to"),
+          content: FutureBuilder(
+            future: _videoPlayerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done)
+                return Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Container(
+                      height: 250,
+                      width: 250,
+                      child: VideoPlayer(_controller),
+                    ),
+                  ],
+                );
+              else
+                return Center(child: CircularProgressIndicator());
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text("SHARE"),
+              onPressed: () {
+                _setShareCount();
+                ShareImage(file.file.path).shareImage();
+                _controller.pause();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("CLOSE"),
+              onPressed: () {
+                _controller.pause();
                 Navigator.of(context).pop();
               },
             ),
@@ -130,8 +237,30 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  Future<int> _getShareCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    int sharedCount = prefs.getInt("imagesshared");
+    if (sharedCount == null) {
+      return 0;
+    } else {
+      return sharedCount;
+    }
+  }
+
+  _setShareCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    int sharedCount = prefs.getInt("imagesshared");
+    if (sharedCount == null) {
+      prefs.setInt("imagesshared", 1);
+    } else {
+      prefs.setInt("imagesshared", sharedCount + 1);
+      // print(sharedCount);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final textColor = Color(0xFFE84A5F);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -152,8 +281,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                  width: 0.95,
-                  color: Colors.grey[300],
+                  width: 1,
+                  color: Colors.grey[200],
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -163,8 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     con,
                     textAlign: TextAlign.justify,
                     style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 14.5,
                     ),
                   ),
                   Padding(
@@ -175,8 +303,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          radius: 90.0,
-                          splashColor: Colors.red,
+                          splashColor: Colors.red[200],
+                          highlightColor: Colors.red[200],
                           borderRadius: BorderRadius.circular(30.0),
                           child: Row(
                             children: [
@@ -185,28 +313,50 @@ class _MyHomePageState extends State<MyHomePage> {
                                 size: 30,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
+                                padding: const EdgeInsets.only(left: 5),
                                 child: Text(
                                   "Rate & Review",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
+                                    color: textColor,
                                   ),
                                 ),
                               ),
                             ],
                           ),
                           onTap: () {
-                            print(MediaQuery.of(context).size.width);
+                            launch(
+                                "https://play.google.com/store/apps/details?id=com.princeappstudio.sharestapp");
                           },
                         ),
-                        IconButton(
-                          splashRadius: 40.0,
-                          splashColor: Colors.red,
-                          icon: Icon(
-                            Icons.share,
-                          ),
-                          onPressed: () {},
-                        )
+                        Row(
+                          children: [
+                            IconButton(
+                              splashRadius: 30,
+                              splashColor: Colors.red[200],
+                              highlightColor: Colors.red[200],
+                              icon: Icon(
+                                FontAwesomeIcons.github,
+                              ),
+                              onPressed: () {
+                                launch(
+                                    "https://github.com/princesanjivy/sharestapp");
+                              },
+                            ),
+                            IconButton(
+                              splashRadius: 30,
+                              splashColor: Colors.red[200],
+                              highlightColor: Colors.red[200],
+                              icon: Icon(
+                                Icons.share,
+                              ),
+                              onPressed: () {
+                                ShareText("Check out this cool app \"Sharestapp\" !" + 
+                                "https://play.google.com/store/apps/details?id=com.princeappstudio.sharestapp").send();
+                              },
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   )
@@ -236,14 +386,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                           borderRadius: BorderRadius.circular(10),
                           highlightColor: Colors.red[200],
-                          splashColor: Colors.red,
+                          splashColor: Colors.red[200],
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 0.95,
-                                color: Colors.grey[300],
+                                width: 1,
+                                color: Colors.grey[200],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -255,11 +405,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Icons.shopping_cart,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 6.0),
+                                      padding: const EdgeInsets.only(left: 5),
                                       child: Text(
                                         "More Apps",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
+                                          color: textColor,
                                         ),
                                       ),
                                     ),
@@ -269,9 +420,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text(
                                   "Check other apps published on Google Play Store",
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                  ),
                                 )
                               ],
                             ),
@@ -287,18 +435,42 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            //[TODO]
+                            showDialog(
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Clear cache"),
+                                    content: Text(
+                                        "Do you want to clear the app cache memory?"),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("YES"),
+                                        onPressed: () {
+                                          DefaultCacheManager().emptyCache();
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text("NO"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
                           },
                           borderRadius: BorderRadius.circular(10),
                           highlightColor: Colors.red[200],
-                          splashColor: Colors.red,
+                          splashColor: Colors.red[200],
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 0.95,
-                                color: Colors.grey[300],
+                                width: 1,
+                                color: Colors.grey[200],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -310,11 +482,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Icons.cached,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 6.0),
+                                      padding: const EdgeInsets.only(left: 5),
                                       child: Text(
                                         "Clear Cache",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
+                                          color: textColor,
                                         ),
                                       ),
                                     ),
@@ -322,11 +495,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 Padding(padding: EdgeInsets.all(5)),
                                 Text(
-                                  "Click here to remove your app cache",
+                                  "Remove your app cache",
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                  ),
                                 )
                               ],
                             ),
@@ -341,17 +511,35 @@ class _MyHomePageState extends State<MyHomePage> {
                           right: 5,
                         ),
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            showAboutDialog(
+                              context: context,
+                              applicationName: "Sharestapp",
+                              applicationVersion: "1.0.0",
+                              applicationIcon: Container(
+                                height: 45,
+                                child: Image.asset("assets/icon.png"),
+                              ),
+                              // children: [
+                              //   Container(
+                              //     height: 50,
+                              //     child: Image.asset("assets/icon.png"),
+                              //   ),
+                              // ],
+                              applicationLegalese:
+                                  "I'll make it simple!", // Its app's tagline
+                            );
+                          },
                           borderRadius: BorderRadius.circular(10),
                           highlightColor: Colors.red[200],
-                          splashColor: Colors.red,
+                          splashColor: Colors.red[200],
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 0.95,
-                                color: Colors.grey[300],
+                                width: 1,
+                                color: Colors.grey[200],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -361,37 +549,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: [
                                     Icon(
                                       Icons.info_outline,
-                                      size: 20.0,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 7.0),
+                                      padding: const EdgeInsets.only(left: 5),
                                       child: Text(
                                         "About",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
+                                          color: textColor,
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 3.0,
-                                        top: 3.0,
-                                        bottom: 1.0,
-                                      ),
-                                      child: Text(
-                                        "More info about Sharestapp",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                Padding(padding: EdgeInsets.all(5)),
+                                Text(
+                                  "More info about Sharestapp",
+                                  textAlign: TextAlign.left,
+                                ),
                               ],
                             ),
                           ),
@@ -413,8 +588,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              width: 0.95,
-                              color: Colors.grey[300],
+                              width: 1,
+                              color: Colors.grey[200],
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -424,9 +599,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    "3",
+                                    imagesshared.toString(),
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 70),
+                                    style: TextStyle(
+                                      fontSize: 70,
+                                      color: textColor,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -434,16 +612,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  // Icon(
-                                  //   Icons.share,
-                                  //   color: Colors.red,
-                                  // ),
-                                  Text(
-                                    "Images shared",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  Text("Contents shared"),
                                 ],
                               ),
                             ],
@@ -467,14 +636,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                           borderRadius: BorderRadius.circular(10),
                           highlightColor: Colors.red[200],
-                          splashColor: Colors.red,
+                          splashColor: Colors.red[200],
                           child: Container(
                             width: (MediaQuery.of(context).size.width - 30) / 2,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                width: 0.95,
-                                color: Colors.grey[300],
+                                width: 1,
+                                color: Colors.grey[200],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -491,7 +660,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       child: Text(
                                         "Developers",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
+                                          color: textColor,
                                         ),
                                       ),
                                     ),
@@ -499,11 +669,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 Padding(padding: EdgeInsets.all(5)),
                                 Text(
-                                  "Click here to know about the developers",
+                                  "Click to know about the developers",
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                  ),
                                 ),
                               ],
                             ),
@@ -520,27 +687,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-class FadeRoute extends PageRouteBuilder {
-  final Widget page;
-  FadeRoute({this.page})
-      : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
 }

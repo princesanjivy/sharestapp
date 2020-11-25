@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharestapp/ads.dart';
 import 'package:sharestapp/shareimage.dart';
 
 class MySharestappPage extends StatefulWidget {
@@ -39,8 +41,6 @@ class _MySharestappPageState extends State<MySharestappPage> {
       print("Exists");
       if (this.mounted)
         setState(() {
-          _notcreated = !_notcreated;
-
           files = Directory(_savedpath)
               .listSync()
               .map((item) => item.path)
@@ -48,10 +48,25 @@ class _MySharestappPageState extends State<MySharestappPage> {
               .toList();
 
           show = files.length;
+
+          if (show != 0) {
+            _notcreated = !_notcreated;
+          }
         });
     } else {
       print("Nope");
       if (this.mounted) setState(() {});
+    }
+  }
+
+  _setShareCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    int sharedCount = prefs.getInt("imagesshared");
+    if (sharedCount == null) {
+      prefs.setInt("imagesshared", 1);
+    } else {
+      prefs.setInt("imagesshared", sharedCount + 1);
+      // print(sharedCount);
     }
   }
 
@@ -88,27 +103,33 @@ class _MySharestappPageState extends State<MySharestappPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.black87,
+                        Material(
+                          type: MaterialType.transparency,
+                          child: IconButton(
+                            splashRadius: 20,
+                            splashColor: Colors.red[200],
+                            highlightColor: Colors.red[200],
+                            icon: Icon(
+                              Icons.share,
+                            ),
+                            onPressed: () async {
+                              _setShareCount();
+                              var cacheDir = await getTemporaryDirectory();
+                              print(cacheDir);
+                              i.Image image =
+                                  i.decodeImage(myfile.readAsBytesSync());
+
+                              var path = myfile.path;
+                              path = path.substring(
+                                  path.lastIndexOf("/"), path.length);
+
+                              final File f = File("${cacheDir.path}$path")
+                                ..writeAsBytesSync(i.encodeJpg(image));
+                              print(f);
+                              ShareImage(f.path).shareImage();
+                              InterstitialAd().showAd();
+                            },
                           ),
-                          onPressed: () async {
-                            var cacheDir = await getTemporaryDirectory();
-                            print(cacheDir);
-                            i.Image image =
-                                i.decodeImage(myfile.readAsBytesSync());
-
-                            var path = myfile.path;
-                            path = path.substring(
-                                path.lastIndexOf("/"), path.length);
-
-                            final File f = File("${cacheDir.path}$path")
-                              ..writeAsBytesSync(i.encodeJpg(image));
-                            print(f);
-                            ShareImage(f.path).shareImage();
-                            // SnackBar(content: Text("Image Shared!"));
-                          },
                         ),
                       ],
                     ),
