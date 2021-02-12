@@ -28,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:sharestapp/aboutus.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

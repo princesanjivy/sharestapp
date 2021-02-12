@@ -27,6 +27,7 @@ class MyWAStatusPage extends StatefulWidget {
 
 class _MyWAStatusPageState extends State<MyWAStatusPage> {
   List files = new List();
+  bool dirExists = false;
   // AdmobInterstitial interstitialAd;
   // var wa_path = "/storage/emulated/0/Pictures/Demo";
   var wa_path = "/storage/emulated/0/WhatsApp/Media/.Statuses";
@@ -56,16 +57,7 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
     //     }
     //   },
     // );
-
-    setState(() {
-      files = Directory(wa_path)
-          .listSync()
-          .map((item) => item.path)
-          .where((item) => item.endsWith(".jpg") || item.endsWith(".mp4"))
-          .toList();
-
-      print(files);
-    });
+    _checkDirExists();
   }
 
   // Future<File> thumbnail(file) async {
@@ -78,6 +70,26 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
   //   return File("${cacheDir.path}$path")..writeAsBytesSync(bytes);
   // }
 
+  _checkDirExists() async {
+    bool exists = await Directory(wa_path).exists();
+
+    if (exists)
+      setState(() {
+        files = Directory(wa_path)
+            .listSync()
+            .map((item) => item.path)
+            .where((item) => item.endsWith(".jpg") || item.endsWith(".mp4"))
+            .toList();
+
+        print(files);
+        dirExists = true;
+      });
+    else
+      setState(() {
+        dirExists = false;
+      });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -86,142 +98,147 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: files.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, mainAxisSpacing: 15.0, crossAxisSpacing: 3.0),
-      itemBuilder: (context, index) {
-        File myfile = new File(files[index]);
-        // File thumbnailFile;
+    return !dirExists
+        ? Center(child: Text("WhatsApp is not installed!"))
+        : GridView.builder(
+            itemCount: files.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 15.0,
+                crossAxisSpacing: 3.0),
+            itemBuilder: (context, index) {
+              File myfile = new File(files[index]);
+              // File thumbnailFile;
 
-        // _controller = VideoPlayerController.file(myfile)
-        //   ..initialize().then((value) {
-        //     setState(() {});
-        // });
-        // _controller.setLooping(false);
-        // _controller.setVolume(0);
-        // if (myfile.path.endsWith(".mp4")) {
-        //   thumbnail(myfile).then((value) => thumbnailFile = value);
-        // }
-        if (myfile.path.endsWith(".mp4")) {
-          betterPlayerController = BetterPlayerController(
-              BetterPlayerConfiguration(
-                startAt: Duration(seconds: 10),
-                autoPlay: false,
-                aspectRatio: 0.85,
-                fit: BoxFit.cover,
-                controlsConfiguration: BetterPlayerControlsConfiguration(
-                  showControls: false,
-                  enableMute: false,
-                  enableFullscreen: false,
-                  enableSkips: false,
-                  enableOverflowMenu: false,
-                  enablePlayPause: false,
-                  enableProgressBar: false,
-                ),
-              ),
-              betterPlayerDataSource: BetterPlayerDataSource.file(myfile.path));
-          betterPlayerController.setVolume(1);
-        }
-
-        return GestureDetector(
-          onTap: () {
-            if (myfile.path.endsWith(".jpg"))
-              _showImageDialog(myfile);
-            else {
               // _controller = VideoPlayerController.file(myfile)
               //   ..initialize().then((value) {
               //     setState(() {});
-              //   });
+              // });
               // _controller.setLooping(false);
-              // _controller.play();
-
-              _showVideoDialog(myfile);
-            }
-          },
-          child: Card(
-            elevation: 4,
-            child: GridTile(
-              child: myfile.path.endsWith(".jpg")
-                  ? Image.file(
-                      myfile,
+              // _controller.setVolume(0);
+              // if (myfile.path.endsWith(".mp4")) {
+              //   thumbnail(myfile).then((value) => thumbnailFile = value);
+              // }
+              if (myfile.path.endsWith(".mp4")) {
+                betterPlayerController = BetterPlayerController(
+                    BetterPlayerConfiguration(
+                      startAt: Duration(seconds: 10),
+                      autoPlay: false,
+                      aspectRatio: 0.85,
                       fit: BoxFit.cover,
-                    )
-                  : BetterPlayer(
-                      controller: betterPlayerController,
-                    ),
-              // : VideoPlayer(_controller),
-              footer: Container(
-                color: Colors.white30,
-                alignment: Alignment.centerRight,
-                // padding: EdgeInsets.all(2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Material(
-                      type: MaterialType.transparency,
-                      child: IconButton(
-                        splashRadius: 20,
-                        splashColor: Colors.red[200],
-                        highlightColor: Colors.red[200],
-                        icon: Icon(
-                          Icons.share,
-                        ),
-                        onPressed: () async {
-                          _setShareCount();
-                          var cacheDir = await getTemporaryDirectory();
-                          File f;
-                          var path = myfile.path;
-                          path = path.substring(
-                              path.lastIndexOf("/"), path.length);
-
-                          print(path);
-
-                          if (myfile.path.endsWith(".jpg")) {
-                            i.Image image =
-                                i.decodeImage(myfile.readAsBytesSync());
-
-                            f = File("${cacheDir.path}$path")
-                              ..writeAsBytesSync(i.encodeJpg(image));
-                            print(f);
-                          } else {
-                            Uint8List bytes = myfile.readAsBytesSync();
-                            f = File("${cacheDir.path}$path")
-                              ..writeAsBytesSync(bytes);
-                            print(f);
-                          }
-
-                          ShareImage(f.path).shareImage();
-                          InterstitialAd().showAd();
-                        },
+                      controlsConfiguration: BetterPlayerControlsConfiguration(
+                        showControls: false,
+                        enableMute: false,
+                        enableFullscreen: false,
+                        enableSkips: false,
+                        enableOverflowMenu: false,
+                        enablePlayPause: false,
+                        enableProgressBar: false,
                       ),
                     ),
-                    Material(
-                      type: MaterialType.transparency,
-                      child: IconButton(
-                        splashRadius: 20,
-                        splashColor: Colors.red[200],
-                        highlightColor: Colors.red[200],
-                        icon: Icon(
-                          Icons.save_alt,
-                        ),
-                        onPressed: () async {
-                          // _controller.play();
-                          myfile.path.endsWith(".jpg")
-                              ? SaveImageToDir(myfile).saveImageToDir()
-                              : SaveImageToDir(myfile).saveVideoToDir();
-                          InterstitialAd().showAd();
-                        },
+                    betterPlayerDataSource:
+                        BetterPlayerDataSource.file(myfile.path));
+                betterPlayerController.setVolume(1);
+              }
+
+              return GestureDetector(
+                onTap: () {
+                  if (myfile.path.endsWith(".jpg"))
+                    _showImageDialog(myfile);
+                  else {
+                    // _controller = VideoPlayerController.file(myfile)
+                    //   ..initialize().then((value) {
+                    //     setState(() {});
+                    //   });
+                    // _controller.setLooping(false);
+                    // _controller.play();
+
+                    _showVideoDialog(myfile);
+                  }
+                },
+                child: Card(
+                  elevation: 4,
+                  child: GridTile(
+                    child: myfile.path.endsWith(".jpg")
+                        ? Image.file(
+                            myfile,
+                            fit: BoxFit.cover,
+                          )
+                        : BetterPlayer(
+                            controller: betterPlayerController,
+                          ),
+                    // : VideoPlayer(_controller),
+                    footer: Container(
+                      color: Colors.white30,
+                      alignment: Alignment.centerRight,
+                      // padding: EdgeInsets.all(2),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Material(
+                            type: MaterialType.transparency,
+                            child: IconButton(
+                              splashRadius: 20,
+                              splashColor: Colors.red[200],
+                              highlightColor: Colors.red[200],
+                              icon: Icon(
+                                Icons.share,
+                              ),
+                              onPressed: () async {
+                                _setShareCount();
+                                var cacheDir = await getTemporaryDirectory();
+                                File f;
+                                var path = myfile.path;
+                                path = path.substring(
+                                    path.lastIndexOf("/"), path.length);
+
+                                print(path);
+
+                                if (myfile.path.endsWith(".jpg")) {
+                                  i.Image image =
+                                      i.decodeImage(myfile.readAsBytesSync());
+
+                                  f = File("${cacheDir.path}$path")
+                                    ..writeAsBytesSync(i.encodeJpg(image));
+                                  print(f);
+                                } else {
+                                  Uint8List bytes = myfile.readAsBytesSync();
+                                  f = File("${cacheDir.path}$path")
+                                    ..writeAsBytesSync(bytes);
+                                  print(f);
+                                }
+
+                                ShareImage(f.path).shareImage();
+                                InterstitialAd().showAd();
+                              },
+                            ),
+                          ),
+                          Material(
+                            type: MaterialType.transparency,
+                            child: IconButton(
+                              splashRadius: 20,
+                              splashColor: Colors.red[200],
+                              highlightColor: Colors.red[200],
+                              icon: Icon(
+                                Icons.save_alt,
+                              ),
+                              onPressed: () async {
+                                // _controller.play();
+                                myfile.path.endsWith(".jpg")
+                                    ? SaveImageToDir(myfile).saveImageToDir()
+                                    : SaveImageToDir(myfile).saveVideoToDir();
+                                InterstitialAd().showAd();
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+              );
+            },
+          );
   }
 
   _showImageDialog(File file) {

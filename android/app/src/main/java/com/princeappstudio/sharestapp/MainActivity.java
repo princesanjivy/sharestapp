@@ -123,7 +123,7 @@ public class MainActivity extends FlutterActivity {
     String shareImage(String path) {
         File file = new File(getCacheDir(), path);
         Uri fileUri = FileProvider.getUriForFile(MainActivity.this, "com.princeappstudio.sharestapp.provider", file);
-        // File file = new File(path);
+        // File file = new File(path)
         // Uri fileUri = Uri.fromFile(file);
 
         Intent share = new Intent();
