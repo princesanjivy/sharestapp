@@ -11,12 +11,14 @@ import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
 import 'package:sharestapp/ads.dart';
 import 'package:sharestapp/saveimage.dart';
 import 'package:sharestapp/shareimage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class MyWAStatusPage extends StatefulWidget {
   const MyWAStatusPage({Key key}) : super(key: key);
@@ -27,7 +29,11 @@ class MyWAStatusPage extends StatefulWidget {
 
 class _MyWAStatusPageState extends State<MyWAStatusPage> {
   List files = new List();
+  List<File> loadedImageThumbnailsFile = [];
+
   bool dirExists = false;
+  bool isDataLoaded = false;
+
   // AdmobInterstitial interstitialAd;
   // var wa_path = "/storage/emulated/0/Pictures/Demo";
   var wa_path = "/storage/emulated/0/WhatsApp/Media/.Statuses";
@@ -73,239 +79,372 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
   _checkDirExists() async {
     bool exists = await Directory(wa_path).exists();
 
-    if (exists)
+    if (exists) {
+      files = Directory(wa_path)
+          .listSync()
+          .map((item) => item.path)
+          .where((item) => item.endsWith(".jpg") || item.endsWith(".mp4"))
+          // .where((element) => element.endsWith(".jpg"))
+          .toList();
       setState(() {
-        files = Directory(wa_path)
-            .listSync()
-            .map((item) => item.path)
-            .where((item) => item.endsWith(".jpg") || item.endsWith(".mp4"))
-            .toList();
+        isDataLoaded = false;
+      });
 
-        print(files);
+      loadFiles(files);
+
+      setState(() {
         dirExists = true;
       });
-    else
+    } else {
       setState(() {
         dirExists = false;
       });
+    }
+  }
+
+  void loadFiles(List files) async {
+    for (String f in files) {
+      File file = File(f);
+
+      if (file.path.endsWith(".mp4")) {
+        String tempFilePath = await VideoThumbnail.thumbnailFile(
+          video: file.path.toString(),
+          quality: 98,
+        );
+        print(tempFilePath);
+
+        File tempFile = File(tempFilePath);
+        loadedImageThumbnailsFile.add(tempFile);
+      } else {
+        loadedImageThumbnailsFile.add(file);
+      }
+    }
+
+    print(loadedImageThumbnailsFile.length);
+    setState(() {
+      isDataLoaded = true;
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     if (betterPlayerController != null) betterPlayerController.dispose();
+
+    isDataLoaded = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return !dirExists
         ? Center(child: Text("WhatsApp is not installed!"))
-        : GridView.builder(
-            itemCount: files.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 15.0,
-                crossAxisSpacing: 3.0),
-            itemBuilder: (context, index) {
-              File myfile = new File(files[index]);
-              // File thumbnailFile;
+        : !isDataLoaded
+            ? Center(
+                child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 4),
+                  Text("Loading files..."),
+                ],
+              ))
+            : GridView.builder(
+                itemCount: files.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 3),
+                itemBuilder: (context, index) {
+                  File myfile = new File(files[index]);
+                  // File thumbnailFile;
 
-              // _controller = VideoPlayerController.file(myfile)
-              //   ..initialize().then((value) {
-              //     setState(() {});
-              // });
-              // _controller.setLooping(false);
-              // _controller.setVolume(0);
-              // if (myfile.path.endsWith(".mp4")) {
-              //   thumbnail(myfile).then((value) => thumbnailFile = value);
-              // }
-              if (myfile.path.endsWith(".mp4")) {
-                betterPlayerController = BetterPlayerController(
-                    BetterPlayerConfiguration(
-                      startAt: Duration(seconds: 10),
-                      autoPlay: false,
+                  // String thumbData = await VideoThumbnail.thumbnailFile(
+                  //   video: myfile.path.toString(),
+                  //   quality: 98,
+                  // );
+
+                  // _controller = VideoPlayerController.file(myfile)
+                  //   ..initialize().then((value) {
+                  //     setState(() {});
+                  // });
+                  // _controller.setLooping(false);
+                  // _controller.setVolume(0);
+                  // if (myfile.path.endsWith(".mp4")) {
+                  //   thumbnail(myfile).then((value) => thumbnailFile = value);
+                  // }
+                  // if (myfile.path.endsWith(".mp4")) {
+                  //   betterPlayerController = BetterPlayerController(
+                  //       BetterPlayerConfiguration(
+                  //         startAt: Duration(seconds: 10),
+                  //         autoPlay: false,
+                  //         aspectRatio: 0.85,
+                  //         fit: BoxFit.cover,
+                  //         controlsConfiguration: BetterPlayerControlsConfiguration(
+                  //           showControls: false,
+                  //           enableMute: false,
+                  //           enableFullscreen: false,
+                  //           enableSkips: false,
+                  //           enableOverflowMenu: false,
+                  //           enablePlayPause: false,
+                  //           enableProgressBar: false,
+                  //         ),
+                  //       ),
+                  //       betterPlayerDataSource:
+                  //           BetterPlayerDataSource.file(myfile.path));
+                  //   betterPlayerController.setVolume(1);
+                  // }
+
+                  return GestureDetector(
+                    onTap: () {
+                      if (myfile.path.endsWith(".jpg"))
+                        _showImageDialog(myfile);
+                      else {
+                        // _controller = VideoPlayerController.file(myfile)
+                        //   ..initialize().then((value) {
+                        //     setState(() {});
+                        //   });
+                        // _controller.setLooping(false);
+                        // _controller.play();
+
+                        _showVideoDialog(myfile);
+                      }
+                    },
+                    child: Card(
+                      elevation: 4,
+                      child: GridTile(
+                        child: myfile.path.endsWith(".jpg")
+                            ? Hero(
+                                tag: "image" + myfile.path.toString(),
+                                child: Image.file(
+                                  loadedImageThumbnailsFile[index],
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Image.file(
+                                loadedImageThumbnailsFile[index],
+                                fit: BoxFit.cover,
+                              ),
+                        // : BetterPlayer(
+                        //     controller: betterPlayerController,
+                        //   ),
+                        // : VideoPlayer(_controller),
+                        footer: Container(
+                          color: Colors.white30,
+                          alignment: Alignment.centerRight,
+                          // padding: EdgeInsets.all(2),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Material(
+                                type: MaterialType.transparency,
+                                child: IconButton(
+                                  splashRadius: 20,
+                                  splashColor: Colors.red[200],
+                                  highlightColor: Colors.red[200],
+                                  icon: Icon(
+                                    Icons.share,
+                                  ),
+                                  onPressed: () async {
+                                    _setShareCount();
+                                    var cacheDir =
+                                        await getTemporaryDirectory();
+                                    File f;
+                                    var path = myfile.path;
+                                    path = path.substring(
+                                        path.lastIndexOf("/"), path.length);
+
+                                    print(path);
+
+                                    if (myfile.path.endsWith(".jpg")) {
+                                      i.Image image = i.decodeImage(
+                                          myfile.readAsBytesSync());
+
+                                      f = File("${cacheDir.path}$path")
+                                        ..writeAsBytesSync(i.encodeJpg(image));
+                                      print(f);
+                                    } else {
+                                      Uint8List bytes =
+                                          myfile.readAsBytesSync();
+                                      f = File("${cacheDir.path}$path")
+                                        ..writeAsBytesSync(bytes);
+                                      print(f);
+                                    }
+
+                                    ShareImage(f.path).shareImage();
+                                    InterstitialAd().showAd();
+                                  },
+                                ),
+                              ),
+                              Material(
+                                type: MaterialType.transparency,
+                                child: IconButton(
+                                  splashRadius: 20,
+                                  splashColor: Colors.red[200],
+                                  highlightColor: Colors.red[200],
+                                  icon: Icon(
+                                    Icons.save_alt,
+                                  ),
+                                  onPressed: () async {
+                                    // _controller.play();
+                                    myfile.path.endsWith(".jpg")
+                                        ? SaveImageToDir(myfile)
+                                            .saveImageToDir()
+                                        : SaveImageToDir(myfile)
+                                            .saveVideoToDir();
+                                    InterstitialAd().showAd();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+  }
+
+  _showImageDialog(File file) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              backgroundColor: Colors.black,
+              title: Text("Status Image"),
+            ),
+            body: Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                ),
+                child: Hero(
+                  tag: "image" + file.path.toString(),
+                  child: GestureZoomBox(
+                    maxScale: 6,
+                    doubleTapScale: 2,
+                    duration: Duration(milliseconds: 120),
+                    onPressed: () => Navigator.pop(context),
+                    child: Image.file(file),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       title: Text("Status Image"),
+    //       content: Container(
+    //         color: Colors.black,
+    //         width: 250,
+    //         height: 250,
+    //         child: Image.file(file),
+    //       ),
+    //       actions: [
+    //         TextButton(
+    //           onPressed: () {
+    //             Navigator.pop(context);
+    //           },
+    //           child: Text("CLOSE"),
+    //         )
+    //       ],
+    //     );
+    //   },
+    // );
+  }
+
+  _showVideoDialog(File file) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              backgroundColor: Colors.black,
+              title: Text("Status Video"),
+            ),
+            body: Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                ),
+                child: GestureZoomBox(
+                  maxScale: 6,
+                  doubleTapScale: 2,
+                  duration: Duration(milliseconds: 120),
+                  // onPressed: () => Navigator.pop(context),
+                  child: BetterPlayer.file(
+                    file.path,
+                    betterPlayerConfiguration: BetterPlayerConfiguration(
+                      autoPlay: true,
                       aspectRatio: 0.85,
                       fit: BoxFit.cover,
                       controlsConfiguration: BetterPlayerControlsConfiguration(
-                        showControls: false,
                         enableMute: false,
                         enableFullscreen: false,
                         enableSkips: false,
                         enableOverflowMenu: false,
-                        enablePlayPause: false,
-                        enableProgressBar: false,
-                      ),
-                    ),
-                    betterPlayerDataSource:
-                        BetterPlayerDataSource.file(myfile.path));
-                betterPlayerController.setVolume(1);
-              }
-
-              return GestureDetector(
-                onTap: () {
-                  if (myfile.path.endsWith(".jpg"))
-                    _showImageDialog(myfile);
-                  else {
-                    // _controller = VideoPlayerController.file(myfile)
-                    //   ..initialize().then((value) {
-                    //     setState(() {});
-                    //   });
-                    // _controller.setLooping(false);
-                    // _controller.play();
-
-                    _showVideoDialog(myfile);
-                  }
-                },
-                child: Card(
-                  elevation: 4,
-                  child: GridTile(
-                    child: myfile.path.endsWith(".jpg")
-                        ? Image.file(
-                            myfile,
-                            fit: BoxFit.cover,
-                          )
-                        : BetterPlayer(
-                            controller: betterPlayerController,
-                          ),
-                    // : VideoPlayer(_controller),
-                    footer: Container(
-                      color: Colors.white30,
-                      alignment: Alignment.centerRight,
-                      // padding: EdgeInsets.all(2),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Material(
-                            type: MaterialType.transparency,
-                            child: IconButton(
-                              splashRadius: 20,
-                              splashColor: Colors.red[200],
-                              highlightColor: Colors.red[200],
-                              icon: Icon(
-                                Icons.share,
-                              ),
-                              onPressed: () async {
-                                _setShareCount();
-                                var cacheDir = await getTemporaryDirectory();
-                                File f;
-                                var path = myfile.path;
-                                path = path.substring(
-                                    path.lastIndexOf("/"), path.length);
-
-                                print(path);
-
-                                if (myfile.path.endsWith(".jpg")) {
-                                  i.Image image =
-                                      i.decodeImage(myfile.readAsBytesSync());
-
-                                  f = File("${cacheDir.path}$path")
-                                    ..writeAsBytesSync(i.encodeJpg(image));
-                                  print(f);
-                                } else {
-                                  Uint8List bytes = myfile.readAsBytesSync();
-                                  f = File("${cacheDir.path}$path")
-                                    ..writeAsBytesSync(bytes);
-                                  print(f);
-                                }
-
-                                ShareImage(f.path).shareImage();
-                                InterstitialAd().showAd();
-                              },
-                            ),
-                          ),
-                          Material(
-                            type: MaterialType.transparency,
-                            child: IconButton(
-                              splashRadius: 20,
-                              splashColor: Colors.red[200],
-                              highlightColor: Colors.red[200],
-                              icon: Icon(
-                                Icons.save_alt,
-                              ),
-                              onPressed: () async {
-                                // _controller.play();
-                                myfile.path.endsWith(".jpg")
-                                    ? SaveImageToDir(myfile).saveImageToDir()
-                                    : SaveImageToDir(myfile).saveVideoToDir();
-                                InterstitialAd().showAd();
-                              },
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                   ),
                 ),
-              );
-            },
-          );
-  }
-
-  _showImageDialog(File file) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Status Image"),
-          content: Container(
-            color: Colors.black,
-            width: 250,
-            height: 250,
-            child: Image.file(file),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("CLOSE"),
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  _showVideoDialog(File file) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Status Video"),
-          content: Container(
-            // color: Colors.black,
-            width: 250,
-            height: 250,
-            // child: VideoPlayer(_controller),
-            child: BetterPlayer.file(
-              file.path,
-              betterPlayerConfiguration: BetterPlayerConfiguration(
-                autoPlay: true,
-                aspectRatio: 0.85,
-                fit: BoxFit.cover,
-                controlsConfiguration: BetterPlayerControlsConfiguration(
-                  enableMute: false,
-                  enableFullscreen: false,
-                  enableSkips: false,
-                  enableOverflowMenu: false,
-                ),
               ),
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // _controller.pause();
-                // _controller.dispose();
-                Navigator.pop(context);
-              },
-              child: Text("CLOSE"),
-            )
-          ],
-        );
-      },
+          );
+        },
+      ),
     );
+
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       title: Text("Status Video"),
+    //       content: Container(
+    //         // color: Colors.black,
+    //         width: 250,
+    //         height: 250,
+    //         // child: VideoPlayer(_controller),
+    //         child: BetterPlayer.file(
+    //           file.path,
+    //           betterPlayerConfiguration: BetterPlayerConfiguration(
+    //             autoPlay: true,
+    //             aspectRatio: 0.85,
+    //             fit: BoxFit.cover,
+    //             controlsConfiguration: BetterPlayerControlsConfiguration(
+    //               enableMute: false,
+    //               enableFullscreen: false,
+    //               enableSkips: false,
+    //               enableOverflowMenu: false,
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //       actions: [
+    //         TextButton(
+    //           onPressed: () {
+    //             // _controller.pause();
+    //             // _controller.dispose();
+    //             Navigator.pop(context);
+    //           },
+    //           child: Text("CLOSE"),
+    //         )
+    //       ],
+    //     );
+    //   },
+    // );
   }
 }

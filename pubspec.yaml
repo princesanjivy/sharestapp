@@ -37,7 +37,8 @@ dependencies:
   permission_handler: ^5.0.1+1
   video_player: ^1.0.1
   better_player: ^0.0.34
-  video_thumbnail: ^0.2.4
+  video_thumbnail: ^0.2.5+1
+  gesture_zoom_box: ^0.0.3
 
 
 # dev_dependencies:
