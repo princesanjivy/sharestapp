@@ -22,9 +22,9 @@ SOFTWARE. */
 
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sharestapp/my_tabview.dart';
-import 'package:flutter/material.dart';
 import 'package:sharestapp/pages/about_us.dart';
 
 void main() {
