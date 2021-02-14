@@ -5,15 +5,15 @@
  * @modify date 2020-11-10 01:47:05
  * @desc [description]
  */
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sharestapp/get_image_video.dart';
-import 'dart:async';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:sharestapp/saveimage.dart';
-import 'package:sharestapp/shareimage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharestapp/services/save_image.dart';
+import 'package:sharestapp/services/share_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
@@ -351,8 +351,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Icons.share,
                               ),
                               onPressed: () {
-                                ShareText("Check out this cool app \"Sharestapp\" !" + 
-                                "https://play.google.com/store/apps/details?id=com.princeappstudio.sharestapp").send();
+                                ShareText("Check out this cool app \"Sharestapp\" !" +
+                                        "https://play.google.com/store/apps/details?id=com.princeappstudio.sharestapp")
+                                    .send();
                               },
                             ),
                           ],

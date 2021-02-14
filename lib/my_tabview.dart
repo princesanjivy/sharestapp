@@ -6,20 +6,19 @@
  */
 import 'dart:async';
 
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sharestapp/ads.dart';
-import 'package:sharestapp/get_image_video.dart';
-import 'package:sharestapp/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:sharestapp/saveimage.dart';
-import 'package:sharestapp/shareimage.dart';
-import 'package:sharestapp/savedvideopage.dart';
-import 'package:sharestapp/wastatuspage.dart';
-import 'package:sharestapp/sharestapppage.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharestapp/pages/home.dart';
+import 'package:sharestapp/pages/saved_videos.dart';
+import 'package:sharestapp/pages/saved_images.dart';
+import 'package:sharestapp/pages/wa_status.dart';
+import 'package:sharestapp/services/ads.dart';
+import 'package:sharestapp/services/get_image_video.dart';
+import 'package:sharestapp/services/save_image.dart';
+import 'package:sharestapp/services/share_image.dart';
 import 'package:video_player/video_player.dart';
 
 class MyTabView extends StatefulWidget {

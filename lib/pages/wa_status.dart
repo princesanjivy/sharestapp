@@ -4,20 +4,19 @@
  * @create date 2020-11-10 01:49:28
  * @modify date 2020-11-10 01:49:28
  */
-import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
-import 'package:sharestapp/ads.dart';
-import 'package:sharestapp/saveimage.dart';
-import 'package:sharestapp/shareimage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharestapp/services/ads.dart';
+import 'package:sharestapp/services/save_image.dart';
+import 'package:sharestapp/services/share_image.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class MyWAStatusPage extends StatefulWidget {
