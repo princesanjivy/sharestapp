@@ -206,7 +206,8 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
                         // _controller.setLooping(false);
                         // _controller.play();
 
-                        _showVideoDialog(myfile);
+                        _showVideoDialog(
+                            myfile, loadedImageThumbnailsFile[index]);
                       }
                     },
                     child: Card(
@@ -344,7 +345,9 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
     // );
   }
 
-  _showVideoDialog(File file) {
+  _showVideoDialog(File file, File videoThumbnail) async {
+    final data = await decodeImageFromList(videoThumbnail.readAsBytesSync());
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -354,8 +357,8 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
             file.path,
             betterPlayerConfiguration: BetterPlayerConfiguration(
               autoPlay: true,
-              aspectRatio: 16 / 9,
-              // fit: BoxFit.cover,
+              aspectRatio: data.width < data.height ? 9 / 16 : 16 / 9,
+              fit: BoxFit.contain,
               controlsConfiguration: BetterPlayerControlsConfiguration(
                 enableMute: false,
                 enableFullscreen: false,
