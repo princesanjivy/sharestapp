@@ -6,6 +6,7 @@
  */
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 
@@ -39,7 +40,7 @@ class SaveImageToDir {
   }
 
   void saveVideoToDir() async {
-    var dir = "/storage/emulated/0/Pictures";
+    var dir = "/storage/emulated/0/Videos";
 
     var vidir = await Directory('$dir/Sharestapp').create(recursive: true);
     path = file.path.toString();

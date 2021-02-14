@@ -27,7 +27,7 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
   bool _notcreated = true;
   BetterPlayerController betterPlayerController;
   var show;
-  var _savedpath = "/storage/emulated/0/Pictures/Sharestapp";
+  var _savedpath = "/storage/emulated/0/Videos/Sharestapp";
 
   @override
   void initState() {
