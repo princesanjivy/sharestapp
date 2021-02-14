@@ -10,10 +10,10 @@ import 'dart:typed_data';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharestapp/components/fullscreen_view.dart';
 import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/save_image.dart';
 import 'package:sharestapp/services/share_image.dart';
@@ -309,32 +309,13 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: Colors.black,
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              title: Text("Status Image"),
-            ),
-            body: Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                ),
-                child: Hero(
-                  tag: "image" + file.path.toString(),
-                  child: GestureZoomBox(
-                    maxScale: 6,
-                    doubleTapScale: 2,
-                    duration: Duration(milliseconds: 120),
-                    onPressed: () => Navigator.pop(context),
-                    child: Image.file(file),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+        builder: (context) => FullScreenView(
+          title: "Status Image",
+          child: Hero(
+            tag: "image" + file.path.toString(),
+            child: Image.file(file),
+          ),
+        ),
       ),
     );
 
@@ -367,42 +348,23 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: Colors.black,
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              title: Text("Status Video"),
-            ),
-            body: Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                ),
-                child: GestureZoomBox(
-                  maxScale: 6,
-                  doubleTapScale: 2,
-                  duration: Duration(milliseconds: 120),
-                  // onPressed: () => Navigator.pop(context),
-                  child: BetterPlayer.file(
-                    file.path,
-                    betterPlayerConfiguration: BetterPlayerConfiguration(
-                      autoPlay: true,
-                      aspectRatio: 0.85,
-                      fit: BoxFit.cover,
-                      controlsConfiguration: BetterPlayerControlsConfiguration(
-                        enableMute: false,
-                        enableFullscreen: false,
-                        enableSkips: false,
-                        enableOverflowMenu: false,
-                      ),
-                    ),
-                  ),
-                ),
+        builder: (context) => FullScreenView(
+          title: "Status Video",
+          child: BetterPlayer.file(
+            file.path,
+            betterPlayerConfiguration: BetterPlayerConfiguration(
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              // fit: BoxFit.cover,
+              controlsConfiguration: BetterPlayerControlsConfiguration(
+                enableMute: false,
+                enableFullscreen: false,
+                enableSkips: false,
+                enableOverflowMenu: false,
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
 
