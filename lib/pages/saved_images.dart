@@ -97,7 +97,7 @@ class _MySharestappPageState extends State<MySharestappPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => FullScreenView(
-                        title: "Status Image",
+                        title: "Saved Image",
                         child: Hero(
                           tag: "image" + myfile.path.toString(),
                           child: Image.file(myfile),
