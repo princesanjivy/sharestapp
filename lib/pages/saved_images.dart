@@ -12,6 +12,7 @@ import 'package:flutter/rendering.dart';
 import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharestapp/components/fullscreen_view.dart';
 import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/share_image.dart';
 
@@ -90,49 +91,68 @@ class _MySharestappPageState extends State<MySharestappPage> {
                 crossAxisSpacing: 3.0),
             itemBuilder: (context, index) {
               File myfile = new File(files[index]);
-              return Card(
-                elevation: 4,
-                child: GridTile(
-                  child: Image.file(
-                    myfile,
-                    fit: BoxFit.cover,
-                  ),
-                  footer: Container(
-                    color: Colors.white30,
-                    alignment: Alignment.centerRight,
-                    // padding: EdgeInsets.all(2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Material(
-                          type: MaterialType.transparency,
-                          child: IconButton(
-                            splashRadius: 20,
-                            splashColor: Colors.red[200],
-                            highlightColor: Colors.red[200],
-                            icon: Icon(
-                              Icons.share,
-                            ),
-                            onPressed: () async {
-                              _setShareCount();
-                              var cacheDir = await getTemporaryDirectory();
-                              print(cacheDir);
-                              i.Image image =
-                                  i.decodeImage(myfile.readAsBytesSync());
-
-                              var path = myfile.path;
-                              path = path.substring(
-                                  path.lastIndexOf("/"), path.length);
-
-                              final File f = File("${cacheDir.path}$path")
-                                ..writeAsBytesSync(i.encodeJpg(image));
-                              print(f);
-                              ShareImage(f.path).shareImage();
-                              InterstitialAd().showAd();
-                            },
-                          ),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FullScreenView(
+                        title: "Status Image",
+                        child: Hero(
+                          tag: "image" + myfile.path.toString(),
+                          child: Image.file(myfile),
                         ),
-                      ],
+                      ),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 4,
+                  child: GridTile(
+                    child: Hero(
+                      tag: "image" + myfile.path.toString(),
+                      child: Image.file(
+                        myfile,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    footer: Container(
+                      color: Colors.white30,
+                      alignment: Alignment.centerRight,
+                      // padding: EdgeInsets.all(2),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Material(
+                            type: MaterialType.transparency,
+                            child: IconButton(
+                              splashRadius: 20,
+                              splashColor: Colors.red[200],
+                              highlightColor: Colors.red[200],
+                              icon: Icon(
+                                Icons.share,
+                              ),
+                              onPressed: () async {
+                                _setShareCount();
+                                var cacheDir = await getTemporaryDirectory();
+                                print(cacheDir);
+                                i.Image image =
+                                    i.decodeImage(myfile.readAsBytesSync());
+
+                                var path = myfile.path;
+                                path = path.substring(
+                                    path.lastIndexOf("/"), path.length);
+
+                                final File f = File("${cacheDir.path}$path")
+                                  ..writeAsBytesSync(i.encodeJpg(image));
+                                print(f);
+                                ShareImage(f.path).shareImage();
+                                InterstitialAd().showAd();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
