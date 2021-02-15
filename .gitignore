@@ -37,6 +37,10 @@
 /android/app/keystore.jks
 /android/app/key.properties
 
+/android/private_key.pepk
+
+/android/app/release
+
 # Web related
 lib/generated_plugin_registrant.dart
 
