@@ -45,39 +45,10 @@ class _MyTabViewState extends State<MyTabView> {
 
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
-      showLoadingDialog(context, _keyLoader);
-      setState(() {
-        _sharedText = value;
-        instaposturl = _sharedText;
-        instaposturl = instaposturl.substring(
-            instaposturl.indexOf("ttps://") - 1,
-            instaposturl.indexOf("?igshid"));
-
-        print(instaposturl);
-        GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
-          setState(() {
-            print(value);
-            _imageurl = value;
-
-            if (_imageurl != null && _imageurl != "private")
-              _saveImagetoCache(_imageurl);
-            else {
-              print("Its private");
-              _itsPrivate();
-            }
-          });
-        });
-      });
-    }, onError: (err) {
-      print("getLinkStream error: $err");
-    });
-
-    ReceiveSharingIntent.getInitialText().then((String value) {
-      setState(() {
-        _sharedText = value;
-        if (_sharedText != null) {
-          showLoadingDialog(context, _keyLoader);
-
+      if (value.contains("?igshid") && value.contains("www.instagram.com")) {
+        showLoadingDialog(context, _keyLoader);
+        setState(() {
+          _sharedText = value;
           instaposturl = _sharedText;
           instaposturl = instaposturl.substring(
               instaposturl.indexOf("ttps://") - 1,
@@ -97,8 +68,41 @@ class _MyTabViewState extends State<MyTabView> {
               }
             });
           });
-        }
-      });
+        });
+      }
+    }, onError: (err) {
+      print("getLinkStream error: $err");
+    });
+
+    ReceiveSharingIntent.getInitialText().then((String value) {
+      if (value.contains("?igshid") && value.contains("www.instagram.com")) {
+        setState(() {
+          _sharedText = value;
+          if (_sharedText != null) {
+            showLoadingDialog(context, _keyLoader);
+
+            instaposturl = _sharedText;
+            instaposturl = instaposturl.substring(
+                instaposturl.indexOf("ttps://") - 1,
+                instaposturl.indexOf("?igshid"));
+
+            print(instaposturl);
+            GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+              setState(() {
+                print(value);
+                _imageurl = value;
+
+                if (_imageurl != null && _imageurl != "private")
+                  _saveImagetoCache(_imageurl);
+                else {
+                  print("Its private");
+                  _itsPrivate();
+                }
+              });
+            });
+          }
+        });
+      }
     });
   }
 
@@ -221,10 +225,22 @@ class _MyTabViewState extends State<MyTabView> {
                   ],
                 );
               else
-                return Center(child: CircularProgressIndicator());
+                return SizedBox(
+                  height: 80,
+                  child: Center(child: CircularProgressIndicator()),
+                );
             },
           ),
           actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                SaveImageToDir(file.file).saveVideoToDir();
+                InterstitialAd().showAd();
+                _controller.pause();
+                Navigator.of(context).pop();
+              },
+              child: Text("SAVE"),
+            ),
             TextButton(
               child: Text("SHARE"),
               onPressed: () {

@@ -129,8 +129,7 @@ public class MainActivity extends FlutterActivity {
         Intent share = new Intent();
         share.setAction(Intent.ACTION_SEND);
         share.putExtra(Intent.EXTRA_STREAM, fileUri);
-        share.putExtra(Intent.EXTRA_TEXT, "\"Shared using Sharestapp\"\n\n" +
-                "https://play.google.com/store/apps/details?id=com.princeappstudio.sharestapp");
+        share.putExtra(Intent.EXTRA_TEXT, "\"Shared using Sharestapp\"");
         share.setType("image/*");
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // share.setPackage("com.whatsapp");
