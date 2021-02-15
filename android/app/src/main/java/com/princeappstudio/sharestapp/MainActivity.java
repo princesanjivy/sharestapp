@@ -49,7 +49,7 @@ public class MainActivity extends FlutterActivity {
         });
 
         interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId("YOUR ADMOB INTERSTITIAL AD ID");
+        interstitialAd.setAdUnitId("INTERSTITIAL UNIT ID");
         interstitialAd.loadAd(new AdRequest.Builder().build());
 
         new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
