@@ -5,6 +5,7 @@
  * @modify date 2020-11-10 01:46:44
  */
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetImageVideoFromUrl {
   final String instaposturl;
@@ -13,17 +14,21 @@ class GetImageVideoFromUrl {
   String src;
 
   Future<String> myImageVideo() async {
+    final prefs = await SharedPreferences.getInstance();
+    String sessionId = prefs.getString("sessionid");
+    print(sessionId);
+
     var url = instaposturl;
     var response = await http.get(
       Uri.parse(url),
-      headers: {"cookie": "sessionid=8430221985%3AGrKXkqPdWBJEOR%3A21"},
+      headers: {"cookie": "sessionid=$sessionId"},
     );
 
-    print(response.body.contains("video_url"));
+    // print(response.body.contains("video_url"));
 
     if (response.statusCode == 200) {
       src = response.body;
-      print(src);
+      // print(src);
 
       if (src.contains("video_url")) {
         try {

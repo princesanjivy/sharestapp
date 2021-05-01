@@ -28,7 +28,7 @@ dependencies:
   receive_sharing_intent: ^1.4.1
   google_fonts: ^1.1.1
   flutter_cache_manager: ^2.0.0
-  image: ^2.1.18
+  lottie: ^1.0.1
   url_launcher: 
   font_awesome_flutter: ^8.10.0
   shared_preferences: ^0.5.12+4
@@ -38,10 +38,13 @@ dependencies:
   better_player: ^0.0.34
   video_thumbnail: ^0.2.5+1
   gesture_zoom_box: ^0.0.3
+  flutter_webview_plugin: ^0.3.11
+
 
 dependency_overrides:
   http: ^0.13.1
-
+  image: ^2.1.18
+  archive: ^2.0.0
 
 # dev_dependencies:
 #   flutter_test:

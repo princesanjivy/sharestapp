@@ -29,7 +29,8 @@ class MyTabView extends StatefulWidget {
 class _MyTabViewState extends State<MyTabView> {
   String _imageurl;
   String instaposturl;
-  String _sharedText;
+  String _sharedText, sessionId;
+
   var permission = Permission.storage;
   bool permissionStatus = false;
   StreamSubscription _intentDataStreamSubscription;
@@ -45,42 +46,13 @@ class _MyTabViewState extends State<MyTabView> {
 
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
-      if (value.contains("?igshid") && value.contains("www.instagram.com")) {
-        showLoadingDialog(context, _keyLoader);
-        setState(() {
-          _sharedText = value;
-          instaposturl = _sharedText;
-          instaposturl = instaposturl.substring(
-              instaposturl.indexOf("ttps://") - 1,
-              instaposturl.indexOf("?igshid"));
-
-          print(instaposturl);
-          GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
-            setState(() {
-              print(value);
-              _imageurl = value;
-
-              if (_imageurl != null && _imageurl != "private")
-                _saveImagetoCache(_imageurl);
-              else {
-                print("Its private");
-                _itsPrivate();
-              }
-            });
-          });
-        });
-      }
-    }, onError: (err) {
-      print("getLinkStream error: $err");
-    });
-
-    ReceiveSharingIntent.getInitialText().then((String value) {
-      if (value.contains("?igshid") && value.contains("www.instagram.com")) {
-        setState(() {
-          _sharedText = value;
-          if (_sharedText != null) {
-            showLoadingDialog(context, _keyLoader);
-
+      if (sessionId != null) {
+        if (value != null &&
+            value.contains("?igshid") &&
+            value.contains("www.instagram.com")) {
+          showLoadingDialog(context, _keyLoader);
+          setState(() {
+            _sharedText = value;
             instaposturl = _sharedText;
             instaposturl = instaposturl.substring(
                 instaposturl.indexOf("ttps://") - 1,
@@ -100,8 +72,75 @@ class _MyTabViewState extends State<MyTabView> {
                 }
               });
             });
-          }
-        });
+          });
+        }
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text("Please login to Instagram"),
+                  content: ElevatedButton(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool("show", true);
+
+                      Navigator.pop(context);
+                    },
+                    child: Text("Login"),
+                  ),
+                ));
+      }
+    }, onError: (err) {
+      print("getLinkStream error: $err");
+    });
+
+    ReceiveSharingIntent.getInitialText().then((String value) {
+      if (sessionId == null) {
+        if (value != null &&
+            value.contains("?igshid") &&
+            value.contains("www.instagram.com")) {
+          setState(() {
+            _sharedText = value;
+            if (_sharedText != null) {
+              showLoadingDialog(context, _keyLoader);
+
+              instaposturl = _sharedText;
+              instaposturl = instaposturl.substring(
+                  instaposturl.indexOf("ttps://") - 1,
+                  instaposturl.indexOf("?igshid"));
+
+              print(instaposturl);
+              GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+                setState(() {
+                  print(value);
+                  _imageurl = value;
+
+                  if (_imageurl != null && _imageurl != "private")
+                    _saveImagetoCache(_imageurl);
+                  else {
+                    print("Its private");
+                    _itsPrivate();
+                  }
+                });
+              });
+            }
+          });
+        }
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text("Please login to Instagram"),
+                  content: ElevatedButton(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool("show", true);
+
+                      Navigator.pop(context);
+                    },
+                    child: Text("Login"),
+                  ),
+                ));
       }
     });
   }
@@ -293,6 +332,9 @@ class _MyTabViewState extends State<MyTabView> {
   }
 
   void requestPermission() async {
+    final prefs = await SharedPreferences.getInstance();
+    sessionId = prefs.getString("sessionid");
+
     if (await permission.request().isGranted) {
       print("Granted");
       setState(() {
