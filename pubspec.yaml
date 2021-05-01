@@ -27,7 +27,6 @@ dependencies:
     sdk: flutter
   receive_sharing_intent: ^1.4.1
   google_fonts: ^1.1.1
-  http: ^0.12.2
   flutter_cache_manager: ^2.0.0
   image: ^2.1.18
   url_launcher: 
@@ -39,6 +38,9 @@ dependencies:
   better_player: ^0.0.34
   video_thumbnail: ^0.2.5+1
   gesture_zoom_box: ^0.0.3
+
+dependency_overrides:
+  http: ^0.13.1
 
 
 # dev_dependencies:

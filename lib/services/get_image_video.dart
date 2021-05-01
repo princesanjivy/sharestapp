@@ -14,10 +14,16 @@ class GetImageVideoFromUrl {
 
   Future<String> myImageVideo() async {
     var url = instaposturl;
-    var response = await http.get(url);
+    var response = await http.get(
+      Uri.parse(url),
+      headers: {"cookie": "sessionid=8430221985%3AGrKXkqPdWBJEOR%3A21"},
+    );
+
+    print(response.body.contains("video_url"));
 
     if (response.statusCode == 200) {
       src = response.body;
+      print(src);
 
       if (src.contains("video_url")) {
         try {
@@ -26,6 +32,7 @@ class GetImageVideoFromUrl {
           src = src.substring(src.indexOf("\"video_url\":\""),
               src.indexOf("\",\"video_view_count\":"));
           var r = "\\u0026";
+          print(src);
           src = src.replaceAll(r, "&");
           src = src.replaceAll("\"video_url\":\"", "");
         } catch (e) {
