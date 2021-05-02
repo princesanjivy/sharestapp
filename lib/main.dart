@@ -24,12 +24,19 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sharestapp/my_tabview.dart';
 import 'package:sharestapp/pages/about_us.dart';
+import 'package:sharestapp/providers/show_lottie.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ShowLottie(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

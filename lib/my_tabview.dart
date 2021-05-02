@@ -9,12 +9,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharestapp/pages/home.dart';
 import 'package:sharestapp/pages/saved_images.dart';
 import 'package:sharestapp/pages/saved_videos.dart';
 import 'package:sharestapp/pages/wa_status.dart';
+import 'package:sharestapp/providers/show_lottie.dart';
 import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/get_image_video.dart';
 import 'package:sharestapp/services/save_image.dart';
@@ -46,101 +48,106 @@ class _MyTabViewState extends State<MyTabView> {
 
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
-      if (sessionId != null) {
-        if (value != null &&
-            value.contains("?igshid") &&
-            value.contains("www.instagram.com")) {
-          showLoadingDialog(context, _keyLoader);
-          setState(() {
-            _sharedText = value;
-            instaposturl = _sharedText;
-            instaposturl = instaposturl.substring(
-                instaposturl.indexOf("ttps://") - 1,
-                instaposturl.indexOf("?igshid"));
+      if (value != null) {
+        if (sessionId != null) {
+          if (value.contains("?igshid") &&
+              value.contains("www.instagram.com")) {
+            setState(() {
+              _sharedText = value;
+              if (_sharedText != null) {
+                showLoadingDialog(context, _keyLoader);
 
-            print(instaposturl);
-            GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
-              setState(() {
-                print(value);
-                _imageurl = value;
+                instaposturl = _sharedText;
+                instaposturl = instaposturl.substring(
+                    instaposturl.indexOf("ttps://") - 1,
+                    instaposturl.indexOf("?igshid"));
 
-                if (_imageurl != null && _imageurl != "private")
-                  _saveImagetoCache(_imageurl);
-                else {
-                  print("Its private");
-                  _itsPrivate();
-                }
-              });
+                print(instaposturl);
+                GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+                  setState(() {
+                    print(value);
+                    _imageurl = value;
+
+                    if (_imageurl != null && _imageurl != "private")
+                      _saveImagetoCache(_imageurl);
+                    else {
+                      print("Its private");
+                      _itsPrivate();
+                    }
+                  });
+                });
+              }
             });
-          });
-        }
-      } else {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: Text("Please login to Instagram"),
-                  content: ElevatedButton(
-                    onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      prefs.setBool("show", true);
+          }
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text("Please login to Instagram"),
+                    content: ElevatedButton(
+                      onPressed: () async {
+                        Provider.of<ShowLottie>(context, listen: false)
+                            .setValue(true);
 
-                      Navigator.pop(context);
-                    },
-                    child: Text("Login"),
-                  ),
-                ));
+                        Navigator.pop(context);
+                      },
+                      child: Text("Login"),
+                    ),
+                  ));
+        }
       }
     }, onError: (err) {
       print("getLinkStream error: $err");
     });
 
     ReceiveSharingIntent.getInitialText().then((String value) {
-      if (sessionId == null) {
-        if (value != null &&
-            value.contains("?igshid") &&
-            value.contains("www.instagram.com")) {
-          setState(() {
-            _sharedText = value;
-            if (_sharedText != null) {
-              showLoadingDialog(context, _keyLoader);
+      if (value != null) {
+        if (sessionId != null) {
+          if (value.contains("?igshid") &&
+              value.contains("www.instagram.com")) {
+            setState(() {
+              _sharedText = value;
+              if (_sharedText != null) {
+                showLoadingDialog(context, _keyLoader);
 
-              instaposturl = _sharedText;
-              instaposturl = instaposturl.substring(
-                  instaposturl.indexOf("ttps://") - 1,
-                  instaposturl.indexOf("?igshid"));
+                instaposturl = _sharedText;
+                instaposturl = instaposturl.substring(
+                    instaposturl.indexOf("ttps://") - 1,
+                    instaposturl.indexOf("?igshid"));
 
-              print(instaposturl);
-              GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
-                setState(() {
-                  print(value);
-                  _imageurl = value;
+                print(instaposturl);
+                GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+                  setState(() {
+                    print(value);
+                    _imageurl = value;
 
-                  if (_imageurl != null && _imageurl != "private")
-                    _saveImagetoCache(_imageurl);
-                  else {
-                    print("Its private");
-                    _itsPrivate();
-                  }
+                    if (_imageurl != null && _imageurl != "private")
+                      _saveImagetoCache(_imageurl);
+                    else {
+                      print("Its private");
+                      _itsPrivate();
+                    }
+                  });
                 });
-              });
-            }
-          });
-        }
-      } else {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: Text("Please login to Instagram"),
-                  content: ElevatedButton(
-                    onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      prefs.setBool("show", true);
+              }
+            });
+          }
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text("Please login to Instagram"),
+                    content: ElevatedButton(
+                      onPressed: () async {
+                        Provider.of<ShowLottie>(context, listen: false)
+                            .setValue(true);
 
-                      Navigator.pop(context);
-                    },
-                    child: Text("Login"),
-                  ),
-                ));
+                        Navigator.pop(context);
+                      },
+                      child: Text("Login"),
+                    ),
+                  ));
+        }
       }
     });
   }

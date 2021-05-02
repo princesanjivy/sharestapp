@@ -39,6 +39,7 @@ dependencies:
   video_thumbnail: ^0.2.5+1
   gesture_zoom_box: ^0.0.3
   flutter_webview_plugin: ^0.3.11
+  provider: ^5.0.0
 
 
 dependency_overrides:
@@ -58,3 +59,4 @@ flutter:
     - assets/vignesh.jpeg
     - assets/sanjivy.jpg
     - assets/icon.png
+    - assets/hand_tap.json
