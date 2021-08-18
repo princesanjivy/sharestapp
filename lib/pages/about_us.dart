@@ -5,9 +5,9 @@
  * @modify date 2020-11-10 01:44:06
  */
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void redirect(String url) async {
   if (await canLaunch(url)) {
@@ -151,10 +151,10 @@ class _AboutUsState extends State<AboutUs> {
                     ),
                     IconButton(
                       onPressed: () {
-                        redirect('https://princesanjivy.github.io/portfolio/');
+                        redirect('https://princesanjivy-portfolio.web.app/');
                       },
                       icon: FaIcon(
-                        FontAwesomeIcons.globeAmericas,
+                        FontAwesomeIcons.globeAsia,
                         size: 25.0,
                         color: Colors.grey[700],
                       ),
@@ -268,11 +268,10 @@ class _AboutUsState extends State<AboutUs> {
                     ),
                     IconButton(
                       onPressed: () {
-                        redirect(
-                            'https://www.linkedin.com/in/vignesh-k-53a0651b1/');
+                        redirect('https://vigneshhendrix.github.io/');
                       },
                       icon: FaIcon(
-                        FontAwesomeIcons.linkedin,
+                        FontAwesomeIcons.globeAsia,
                         size: 25.0,
                         color: Colors.grey[700],
                       ),

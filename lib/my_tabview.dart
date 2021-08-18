@@ -48,10 +48,10 @@ class _MyTabViewState extends State<MyTabView> {
 
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
+      print(sessionId);
       if (value != null) {
         if (sessionId != null) {
-          if (value.contains("?igshid") &&
-              value.contains("www.instagram.com")) {
+          if (value.contains("?utm") && value.contains("www.instagram.com")) {
             setState(() {
               _sharedText = value;
               if (_sharedText != null) {
@@ -60,7 +60,7 @@ class _MyTabViewState extends State<MyTabView> {
                 instaposturl = _sharedText;
                 instaposturl = instaposturl.substring(
                     instaposturl.indexOf("ttps://") - 1,
-                    instaposturl.indexOf("?igshid"));
+                    instaposturl.indexOf("?utm"));
 
                 print(instaposturl);
                 GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
@@ -101,10 +101,11 @@ class _MyTabViewState extends State<MyTabView> {
     });
 
     ReceiveSharingIntent.getInitialText().then((String value) {
+      print(sessionId);
+      print("URL: $value");
       if (value != null) {
         if (sessionId != null) {
-          if (value.contains("?igshid") &&
-              value.contains("www.instagram.com")) {
+          if (value.contains("?utm") && value.contains("www.instagram.com")) {
             setState(() {
               _sharedText = value;
               if (_sharedText != null) {
@@ -113,7 +114,7 @@ class _MyTabViewState extends State<MyTabView> {
                 instaposturl = _sharedText;
                 instaposturl = instaposturl.substring(
                     instaposturl.indexOf("ttps://") - 1,
-                    instaposturl.indexOf("?igshid"));
+                    instaposturl.indexOf("?utm"));
 
                 print(instaposturl);
                 GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {

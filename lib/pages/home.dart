@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //     instaposturl = _sharedText;
     //     instaposturl = instaposturl.substring(
     //         instaposturl.indexOf("ttps://") - 1,
-    //         instaposturl.indexOf("?igshid"));
+    //         instaposturl.indexOf("?utm"));
 
     //     print(instaposturl);
     //     GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //       instaposturl = _sharedText;
     //       instaposturl = instaposturl.substring(
     //           instaposturl.indexOf("ttps://") - 1,
-    //           instaposturl.indexOf("?igshid"));
+    //           instaposturl.indexOf("?utm"));
 
     //       print(instaposturl);
     //       GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
