@@ -59,24 +59,27 @@ class _MyAppState extends State<MyApp> {
               ),
         ),
         primaryColor: appbarColor,
-        accentColor: appbarColor,
         appBarTheme: AppBarTheme(
-          textTheme: GoogleFonts.quicksandTextTheme(
-            Theme.of(context).textTheme.apply(
-                  bodyColor: Colors.white,
-                ),
+          backgroundColor: Color(0xFFE84A5F),
+          titleTextStyle: GoogleFonts.quicksand(
+            fontWeight: FontWeight.w600,
           ),
+          // textTheme: GoogleFonts.quicksandTextTheme(
+          //   Theme.of(context).textTheme.apply(
+          //         bodyColor: Colors.white,
+          //       ),
+          // ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            overlayColor: MaterialStateProperty.all<Color>(Colors.red[200]),
+            overlayColor: MaterialStateProperty.all<Color?>(Colors.red[200]),
             // foregroundColor: MaterialStateProperty.all<Color>(appbarColor),
             backgroundColor: MaterialStateProperty.all<Color>(appbarColor),
           ),
         ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
-            overlayColor: MaterialStateProperty.all<Color>(Colors.red[200]),
+            overlayColor: MaterialStateProperty.all<Color?>(Colors.red[200]),
             foregroundColor: MaterialStateProperty.all<Color>(appbarColor),
           ),
         ),

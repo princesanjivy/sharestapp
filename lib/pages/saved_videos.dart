@@ -6,10 +6,12 @@
  */
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharestapp/components/fullscreen_view.dart';
@@ -18,20 +20,20 @@ import 'package:sharestapp/services/share_image.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class SavedVideoPage extends StatefulWidget {
-  const SavedVideoPage({Key key}) : super(key: key);
+  const SavedVideoPage({Key? key}) : super(key: key);
 
   @override
   _SavedVideoPageState createState() => _SavedVideoPageState();
 }
 
 class _SavedVideoPageState extends State<SavedVideoPage> {
-  List files = new List();
-  List<File> loadedImageThumbnailsFile = [];
+  List files = new List.empty(growable: true);
+  List<Uint8List> loadedImageThumbnailsFile = [];
 
   bool _notcreated = true;
   bool isDataLoaded = false;
 
-  BetterPlayerController betterPlayerController;
+  BetterPlayerController? betterPlayerController;
 
   var show;
   var _savedpath = "/storage/emulated/0/Videos/Sharestapp";
@@ -47,7 +49,7 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
     bool exists = await Directory(_savedpath).exists();
 
     if (exists) {
-      print("Exists");
+      print("Video Exists");
       if (this.mounted)
         setState(() {
           files = Directory(_savedpath)
@@ -58,6 +60,10 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
 
           setState(() {
             isDataLoaded = false;
+          });
+
+          files.forEach((element) {
+            print(element);
           });
 
           loadFiles(files);
@@ -74,20 +80,20 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
   }
 
   void loadFiles(List files) async {
-    for (String f in files) {
+    for (String f in files as Iterable<String>) {
       File file = File(f);
 
       if (file.path.endsWith(".mp4")) {
-        String tempFilePath = await VideoThumbnail.thumbnailFile(
+        Uint8List? tempFilePath = await (VideoThumbnail.thumbnailData(
           video: file.path.toString(),
-          quality: 98,
-        );
-        print(tempFilePath);
+          quality: 50,
+        ));
+        // print(tempFilePath);
 
-        File tempFile = File(tempFilePath);
-        loadedImageThumbnailsFile.add(tempFile);
+        // File tempFile = File(tempFilePath!);
+        loadedImageThumbnailsFile.add(tempFilePath!);
       } else {
-        loadedImageThumbnailsFile.add(file);
+        // loadedImageThumbnailsFile.add(file);
       }
     }
 
@@ -99,7 +105,7 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
 
   _setShareCount() async {
     final prefs = await SharedPreferences.getInstance();
-    int sharedCount = prefs.getInt("imagesshared");
+    int? sharedCount = prefs.getInt("imagesshared");
     if (sharedCount == null) {
       prefs.setInt("imagesshared", 1);
     } else {
@@ -111,7 +117,7 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
   @override
   void dispose() {
     super.dispose();
-    if (betterPlayerController != null) betterPlayerController.dispose();
+    if (betterPlayerController != null) betterPlayerController!.dispose();
 
     isDataLoaded = false;
   }
@@ -128,7 +134,9 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
+                  CircularProgressIndicator(
+                    color: Color(0xFFE84A5F),
+                  ),
                   SizedBox(height: 4),
                   Text("Loading files..."),
                 ],
@@ -172,7 +180,7 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
                     child: Card(
                       elevation: 4,
                       child: GridTile(
-                        child: Image.file(
+                        child: Image.memory(
                           loadedImageThumbnailsFile[index],
                           fit: BoxFit.cover,
                         ),
@@ -221,8 +229,10 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
               );
   }
 
-  _showVideoDialog(File file, File videoThumbnail) async {
-    final data = await decodeImageFromList(videoThumbnail.readAsBytesSync());
+  _showVideoDialog(File file, Uint8List videoThumbnail) async {
+    final data = img.decodeImage(videoThumbnail);
+    print(data!.width);
+    // final data = await decodeImageFromList(videoThumbnail.readAsBytesSync());
 
     Navigator.push(
       context,

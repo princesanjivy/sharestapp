@@ -25,14 +25,10 @@ class _InstaLoginState extends State<InstaLogin> {
   getCookies(String currentUrl) async {
     final prefs = await SharedPreferences.getInstance();
 
-    flutterWebViewPlugin.getAllCookies(currentUrl).then((myFData) async {
-      print(myFData.length);
-      for (var i in myFData.keys) {
-        if (i.trim() == "sessionid") {
-          print(i + ": " + myFData[i]);
-          await prefs.setString("sessionid", myFData[i].trim().toString());
-        }
-      }
+    flutterWebViewPlugin.getAllCookies(currentUrl).then((sessionId) async {
+      print(sessionId);
+      await prefs.setString("sessionid", sessionId.toString());
+
       flutterWebViewPlugin.close();
       Navigator.pushReplacement(
         context,
@@ -54,6 +50,7 @@ class _InstaLoginState extends State<InstaLogin> {
     return SafeArea(
       child: WebviewScaffold(
         url: this.url,
+        withJavascript: true,
         clearCache: true,
         clearCookies: true,
       ),

@@ -23,7 +23,7 @@ import 'package:video_player/video_player.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -31,18 +31,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _imageurl;
-  String instaposturl;
-  String _sharedText;
-  StreamSubscription _intentDataStreamSubscription;
+  String? _imageurl;
+  String? instaposturl;
+  String? _sharedText;
+  StreamSubscription? _intentDataStreamSubscription;
   String con =
       "Sharestapp is an open source application that let's an end user to directly share an image/video from Instagram to other apps in an exact image/video format, and also allows the user to save in mobile's local storage.";
   var f;
   var _controlText = "PLAY";
   int imagesshared = 0;
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
-  VideoPlayerController _controller;
-  Future<void> _videoPlayerFuture;
+  VideoPlayerController? _controller;
+  Future<void>? _videoPlayerFuture;
   bool showTap = false;
 
   @override
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {
     super.dispose();
     // _intentDataStreamSubscription.cancel();
-    if (_controller != null) _controller.dispose();
+    if (_controller != null) _controller!.dispose();
     // setState(() {
     //   _sharedText = null;
     // });
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _saveImagetoCache(i) async {
     if (_imageurl != null) {
       var myFile = await DefaultCacheManager().downloadFile(i);
-      Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+      Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
       setState(() {
         _sharedText = null;
         ReceiveSharingIntent.reset();
@@ -131,9 +131,9 @@ class _MyHomePageState extends State<MyHomePage> {
           print(f.file.path);
 
           _controller = VideoPlayerController.file(f.file);
-          _videoPlayerFuture = _controller.initialize();
-          _controller.setLooping(true);
-          _controller.play();
+          _videoPlayerFuture = _controller!.initialize();
+          _controller!.setLooping(true);
+          _controller!.play();
 
           _showVideoDialog(f);
         }
@@ -194,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       height: 250,
                       width: 250,
-                      child: VideoPlayer(_controller),
+                      child: VideoPlayer(_controller!),
                     ),
                   ],
                 );
@@ -208,14 +208,14 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 _setShareCount();
                 ShareImage(file.file.path).shareImage();
-                _controller.pause();
+                _controller!.pause();
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: Text("CLOSE"),
               onPressed: () {
-                _controller.pause();
+                _controller!.pause();
                 Navigator.of(context).pop();
               },
             ),
@@ -246,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<int> _getShareCount() async {
     final prefs = await SharedPreferences.getInstance();
-    int sharedCount = prefs.getInt("imagesshared");
+    int? sharedCount = prefs.getInt("imagesshared");
     if (sharedCount == null) {
       return 0;
     } else {
@@ -256,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _setShareCount() async {
     final prefs = await SharedPreferences.getInstance();
-    int sharedCount = prefs.getInt("imagesshared");
+    int? sharedCount = prefs.getInt("imagesshared");
     if (sharedCount == null) {
       prefs.setInt("imagesshared", 1);
     } else {
@@ -310,7 +310,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 1,
-                        color: Colors.grey[200],
+                        color: Colors.grey[200]!,
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -424,7 +424,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       width: 1,
-                                      color: Colors.grey[200],
+                                      color: Colors.grey[200]!,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -505,7 +505,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       width: 1,
-                                      color: Colors.grey[200],
+                                      color: Colors.grey[200]!,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -577,7 +577,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       width: 1,
-                                      color: Colors.grey[200],
+                                      color: Colors.grey[200]!,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -630,7 +630,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     width: 1,
-                                    color: Colors.grey[200],
+                                    color: Colors.grey[200]!,
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -686,7 +686,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       width: 1,
-                                      color: Colors.grey[200],
+                                      color: Colors.grey[200]!,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -759,7 +759,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       width: 1,
-                                      color: Colors.grey[200],
+                                      color: Colors.grey[200]!,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),

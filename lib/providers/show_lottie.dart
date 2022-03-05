@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowLottie with ChangeNotifier {
   bool show = false;
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   ShowLottie() {
     _initValue();
@@ -11,7 +11,7 @@ class ShowLottie with ChangeNotifier {
 
   _initValue() async {
     prefs = await SharedPreferences.getInstance();
-    bool show = prefs.getBool("key");
+    bool? show = prefs.getBool("key");
 
     if (show == null) {
       this.show = false;

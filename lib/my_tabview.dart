@@ -15,7 +15,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharestapp/pages/home.dart';
 import 'package:sharestapp/pages/saved_images.dart';
 import 'package:sharestapp/pages/saved_videos.dart';
-import 'package:sharestapp/pages/wa_status.dart';
 import 'package:sharestapp/providers/show_lottie.dart';
 import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/get_image_video.dart';
@@ -29,16 +28,16 @@ class MyTabView extends StatefulWidget {
 }
 
 class _MyTabViewState extends State<MyTabView> {
-  String _imageurl;
-  String instaposturl;
-  String _sharedText, sessionId;
+  String? _imageurl;
+  String? instaposturl;
+  String? _sharedText, sessionId;
 
   var permission = Permission.storage;
   bool permissionStatus = false;
-  StreamSubscription _intentDataStreamSubscription;
+  late StreamSubscription _intentDataStreamSubscription;
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
-  VideoPlayerController _controller;
-  Future<void> _videoPlayerFuture;
+  VideoPlayerController? _controller;
+  Future<void>? _videoPlayerFuture;
   var f;
 
   @override
@@ -58,9 +57,9 @@ class _MyTabViewState extends State<MyTabView> {
                 showLoadingDialog(context, _keyLoader);
 
                 instaposturl = _sharedText;
-                instaposturl = instaposturl.substring(
-                    instaposturl.indexOf("ttps://") - 1,
-                    instaposturl.indexOf("?utm"));
+                instaposturl = instaposturl!.substring(
+                    instaposturl!.indexOf("ttps://") - 1,
+                    instaposturl!.indexOf("?utm"));
 
                 print(instaposturl);
                 GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
@@ -100,7 +99,7 @@ class _MyTabViewState extends State<MyTabView> {
       print("getLinkStream error: $err");
     });
 
-    ReceiveSharingIntent.getInitialText().then((String value) {
+    ReceiveSharingIntent.getInitialText().then((String? value) {
       print(sessionId);
       print("URL: $value");
       if (value != null) {
@@ -112,9 +111,9 @@ class _MyTabViewState extends State<MyTabView> {
                 showLoadingDialog(context, _keyLoader);
 
                 instaposturl = _sharedText;
-                instaposturl = instaposturl.substring(
-                    instaposturl.indexOf("ttps://") - 1,
-                    instaposturl.indexOf("?utm"));
+                instaposturl = instaposturl!.substring(
+                    instaposturl!.indexOf("ttps://") - 1,
+                    instaposturl!.indexOf("?utm"));
 
                 print(instaposturl);
                 GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
@@ -154,7 +153,7 @@ class _MyTabViewState extends State<MyTabView> {
   }
 
   _itsPrivate() {
-    Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+    Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -177,7 +176,7 @@ class _MyTabViewState extends State<MyTabView> {
 
   _setShareCount() async {
     final prefs = await SharedPreferences.getInstance();
-    int sharedCount = prefs.getInt("imagesshared");
+    int? sharedCount = prefs.getInt("imagesshared");
     if (sharedCount == null) {
       prefs.setInt("imagesshared", 1);
     } else {
@@ -189,7 +188,7 @@ class _MyTabViewState extends State<MyTabView> {
   _saveImagetoCache(i) async {
     if (_imageurl != null) {
       var myFile = await DefaultCacheManager().downloadFile(i);
-      Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+      Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
       setState(() {
         _sharedText = null;
         ReceiveSharingIntent.reset();
@@ -202,9 +201,9 @@ class _MyTabViewState extends State<MyTabView> {
           print(f.file.path);
 
           _controller = VideoPlayerController.file(f.file);
-          _videoPlayerFuture = _controller.initialize();
-          _controller.setLooping(true);
-          _controller.play();
+          _videoPlayerFuture = _controller!.initialize();
+          _controller!.setLooping(true);
+          _controller!.play();
 
           _showVideoDialog(f);
         }
@@ -267,7 +266,7 @@ class _MyTabViewState extends State<MyTabView> {
                     Container(
                       height: 250,
                       width: 250,
-                      child: VideoPlayer(_controller),
+                      child: VideoPlayer(_controller!),
                     ),
                   ],
                 );
@@ -283,7 +282,7 @@ class _MyTabViewState extends State<MyTabView> {
               onPressed: () {
                 SaveImageToDir(file.file).saveVideoToDir();
                 InterstitialAd().showAd();
-                _controller.pause();
+                _controller!.pause();
                 Navigator.of(context).pop();
               },
               child: Text("SAVE"),
@@ -293,7 +292,7 @@ class _MyTabViewState extends State<MyTabView> {
               onPressed: () {
                 _setShareCount();
                 ShareImage(file.file.path).shareImage();
-                _controller.pause();
+                _controller!.pause();
                 // InterstitialAd().showAd();
                 Navigator.of(context).pop();
               },
@@ -301,7 +300,7 @@ class _MyTabViewState extends State<MyTabView> {
             TextButton(
               child: Text("CLOSE"),
               onPressed: () {
-                _controller.pause();
+                _controller!.pause();
                 InterstitialAd().showAd();
                 Navigator.of(context).pop();
               },
@@ -336,7 +335,7 @@ class _MyTabViewState extends State<MyTabView> {
     super.dispose();
     _intentDataStreamSubscription.cancel();
     ReceiveSharingIntent.reset();
-    if (_controller != null) _controller.dispose();
+    if (_controller != null) _controller!.dispose();
   }
 
   void requestPermission() async {
@@ -394,7 +393,7 @@ class _MyTabViewState extends State<MyTabView> {
             ),
           )
         : DefaultTabController(
-            length: 4,
+            length: 3,
             child: Scaffold(
               appBar: AppBar(
                 title: Text(
@@ -424,23 +423,24 @@ class _MyTabViewState extends State<MyTabView> {
                     //       ),
                     //     )),
                     TabBar(
-                  isScrollable: true,
+                  // isScrollable: true,
+                  indicatorColor: Colors.white,
                   indicatorSize: TabBarIndicatorSize.tab,
                   tabs: [
                     Tab(
                       // text: 'HOME',
                       icon: Icon(Icons.home_outlined),
                     ),
+                    // Tab(
+                    //   text: 'WHATSAPP STATUS',
+                    //   // icon: Icon(Icons.ac_unit),
+                    // ),
                     Tab(
-                      text: 'WHATSAPP STATUS',
+                      text: 'IMAGES',
                       // icon: Icon(Icons.ac_unit),
                     ),
                     Tab(
-                      text: 'SAVED IMAGES',
-                      // icon: Icon(Icons.ac_unit),
-                    ),
-                    Tab(
-                      text: 'SAVED VIDEOS',
+                      text: 'VIDEOS',
                       // icon: Icon(Icons.ac_unit),
                     ),
                   ],
@@ -450,7 +450,7 @@ class _MyTabViewState extends State<MyTabView> {
               body: TabBarView(
                 children: [
                   MyHomePage(),
-                  MyWAStatusPage(),
+                  // MyWAStatusPage(),
                   MySharestappPage(),
                   SavedVideoPage(),
                 ],

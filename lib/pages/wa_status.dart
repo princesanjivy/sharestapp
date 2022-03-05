@@ -4,6 +4,7 @@
  * @create date 2020-11-10 01:49:28
  * @modify date 2020-11-10 01:49:28
  */
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -20,14 +21,14 @@ import 'package:sharestapp/services/share_image.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class MyWAStatusPage extends StatefulWidget {
-  const MyWAStatusPage({Key key}) : super(key: key);
+  const MyWAStatusPage({Key? key}) : super(key: key);
 
   @override
   _MyWAStatusPageState createState() => _MyWAStatusPageState();
 }
 
 class _MyWAStatusPageState extends State<MyWAStatusPage> {
-  List files = new List();
+  List files = new List.empty(growable: true);
   List<File> loadedImageThumbnailsFile = [];
 
   bool dirExists = false;
@@ -37,11 +38,11 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
   // var wa_path = "/storage/emulated/0/Pictures/Demo";
   var wa_path = "/storage/emulated/0/WhatsApp/Media/.Statuses";
   // VideoPlayerController _controller;
-  BetterPlayerController betterPlayerController;
+  BetterPlayerController? betterPlayerController;
 
   _setShareCount() async {
     final prefs = await SharedPreferences.getInstance();
-    int sharedCount = prefs.getInt("imagesshared");
+    int? sharedCount = prefs.getInt("imagesshared");
     if (sharedCount == null) {
       prefs.setInt("imagesshared", 1);
     } else {
@@ -78,6 +79,10 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
   _checkDirExists() async {
     bool exists = await Directory(wa_path).exists();
 
+    print(exists);
+
+    print(Directory(wa_path).listSync());
+
     if (exists) {
       files = Directory(wa_path)
           .listSync()
@@ -102,14 +107,14 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
   }
 
   void loadFiles(List files) async {
-    for (String f in files) {
+    for (String f in files as Iterable<String>) {
       File file = File(f);
 
       if (file.path.endsWith(".mp4")) {
-        String tempFilePath = await VideoThumbnail.thumbnailFile(
+        String tempFilePath = await (VideoThumbnail.thumbnailFile(
           video: file.path.toString(),
           quality: 98,
-        );
+        ) as FutureOr<String>);
         print(tempFilePath);
 
         File tempFile = File(tempFilePath);
@@ -128,7 +133,7 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
   @override
   void dispose() {
     super.dispose();
-    if (betterPlayerController != null) betterPlayerController.dispose();
+    if (betterPlayerController != null) betterPlayerController!.dispose();
 
     isDataLoaded = false;
   }
@@ -258,7 +263,7 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
 
                                     if (myfile.path.endsWith(".jpg")) {
                                       i.Image image = i.decodeImage(
-                                          myfile.readAsBytesSync());
+                                          myfile.readAsBytesSync())!;
 
                                       f = File("${cacheDir.path}$path")
                                         ..writeAsBytesSync(i.encodeJpg(image));

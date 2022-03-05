@@ -11,7 +11,7 @@ class InterstitialAd {
 
   void showAd() async {
     try {
-      String result = await platform.invokeMethod("showad");
+      String? result = await platform.invokeMethod("showad");
       print(result);
     } on PlatformException catch (e) {
       print(e);

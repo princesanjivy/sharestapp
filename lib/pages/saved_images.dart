@@ -17,14 +17,14 @@ import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/share_image.dart';
 
 class MySharestappPage extends StatefulWidget {
-  const MySharestappPage({Key key}) : super(key: key);
+  const MySharestappPage({Key? key}) : super(key: key);
 
   @override
   _MySharestappPageState createState() => _MySharestappPageState();
 }
 
 class _MySharestappPageState extends State<MySharestappPage> {
-  List files = new List();
+  List files = new List.empty(growable: true);
   bool _notcreated = true;
   var show;
   var _savedpath = "/storage/emulated/0/Pictures/Sharestapp";
@@ -63,7 +63,7 @@ class _MySharestappPageState extends State<MySharestappPage> {
 
   _setShareCount() async {
     final prefs = await SharedPreferences.getInstance();
-    int sharedCount = prefs.getInt("imagesshared");
+    int? sharedCount = prefs.getInt("imagesshared");
     if (sharedCount == null) {
       prefs.setInt("imagesshared", 1);
     } else {
@@ -137,7 +137,7 @@ class _MySharestappPageState extends State<MySharestappPage> {
                                 var cacheDir = await getTemporaryDirectory();
                                 print(cacheDir);
                                 i.Image image =
-                                    i.decodeImage(myfile.readAsBytesSync());
+                                    i.decodeImage(myfile.readAsBytesSync())!;
 
                                 var path = myfile.path;
                                 path = path.substring(
