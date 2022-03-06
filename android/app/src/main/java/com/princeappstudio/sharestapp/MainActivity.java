@@ -12,7 +12,7 @@ import androidx.core.content.FileProvider;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+//import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -27,7 +27,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 public class MainActivity extends FlutterActivity {
     public static final String CHANNEL = "com.princeappstudio.saveimage";
     public static final String CHANNEL1 = "com.princeappstudio.ad";
-    private InterstitialAd interstitialAd;
+//    private InterstitialAd interstitialAd;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -70,9 +70,9 @@ public class MainActivity extends FlutterActivity {
             }
         });
 
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId("ca-app-pub-5164932036098856/4141348422");
-        interstitialAd.loadAd(new AdRequest.Builder().build());
+//        interstitialAd = new InterstitialAd(this);
+//        interstitialAd.setAdUnitId("ca-app-pub-5164932036098856/4141348422");
+//        interstitialAd.loadAd(new AdRequest.Builder().build());
 
 //        new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
 //            @Override
@@ -109,14 +109,14 @@ public class MainActivity extends FlutterActivity {
 //            }
 //        });
 
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-
-                interstitialAd.loadAd(new AdRequest.Builder().build());
-            }
-        });
+//        interstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//
+//                interstitialAd.loadAd(new AdRequest.Builder().build());
+//            }
+//        });
     }
 
     String shareText(String text) {
@@ -164,12 +164,12 @@ public class MainActivity extends FlutterActivity {
         return fileUri.toString();
     }
 
-    void showAd() {
-        if (interstitialAd.isLoaded()) {
-//            Toast.makeText(this, "Ad is now showing up", Toast.LENGTH_SHORT).show();
-            interstitialAd.show();
-        } else {
-            Toast.makeText(this, "Ad not loaded yet", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    void showAd() {
+//        if (interstitialAd.isLoaded()) {
+////            Toast.makeText(this, "Ad is now showing up", Toast.LENGTH_SHORT).show();
+//            interstitialAd.show();
+//        } else {
+//            Toast.makeText(this, "Ad not loaded yet", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }

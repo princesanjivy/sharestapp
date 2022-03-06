@@ -15,7 +15,6 @@ import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharestapp/components/fullscreen_view.dart';
-import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/save_image.dart';
 import 'package:sharestapp/services/share_image.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -277,7 +276,7 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
                                     }
 
                                     ShareImage(f.path).shareImage();
-                                    InterstitialAd().showAd();
+                                    // InterstitialAd().showAd();
                                   },
                                 ),
                               ),
@@ -297,7 +296,7 @@ class _MyWAStatusPageState extends State<MyWAStatusPage> {
                                             .saveImageToDir()
                                         : SaveImageToDir(myfile)
                                             .saveVideoToDir();
-                                    InterstitialAd().showAd();
+                                    // InterstitialAd().showAd();
                                   },
                                 ),
                               ),

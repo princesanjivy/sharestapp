@@ -13,8 +13,8 @@ import 'package:image/image.dart' as i;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharestapp/components/fullscreen_view.dart';
-import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/share_image.dart';
+import 'package:sharestapp/services/show_interstitial_ad.dart';
 
 class MySharestappPage extends StatefulWidget {
   const MySharestappPage({Key? key}) : super(key: key);
@@ -104,7 +104,7 @@ class _MySharestappPageState extends State<MySharestappPage> {
                         ),
                       ),
                     ),
-                  );
+                  ).then((value) => FullScreenAd.object.show());
                 },
                 child: Card(
                   elevation: 4,
@@ -147,7 +147,8 @@ class _MySharestappPageState extends State<MySharestappPage> {
                                   ..writeAsBytesSync(i.encodeJpg(image));
                                 print(f);
                                 ShareImage(f.path).shareImage();
-                                InterstitialAd().showAd();
+                                // InterstitialAd().showAd();
+                                FullScreenAd.object.show();
                               },
                             ),
                           ),

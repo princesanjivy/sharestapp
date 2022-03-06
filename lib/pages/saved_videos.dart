@@ -15,8 +15,8 @@ import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharestapp/components/fullscreen_view.dart';
-import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/share_image.dart';
+import 'package:sharestapp/services/show_interstitial_ad.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class SavedVideoPage extends StatefulWidget {
@@ -215,7 +215,8 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
                                     print(f);
 
                                     ShareImage(f.path).shareImage();
-                                    InterstitialAd().showAd();
+                                    // InterstitialAd().showAd();
+                                    FullScreenAd.object.show();
                                   },
                                 ),
                               ),
@@ -255,6 +256,6 @@ class _SavedVideoPageState extends State<SavedVideoPage> {
           ),
         ),
       ),
-    );
+    ).then((value) => FullScreenAd.object.show());
   }
 }

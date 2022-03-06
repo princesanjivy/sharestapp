@@ -24,13 +24,18 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:sharestapp/my_tabview.dart';
 import 'package:sharestapp/pages/about_us.dart';
 import 'package:sharestapp/providers/show_lottie.dart';
+import 'package:sharestapp/services/show_interstitial_ad.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+  FullScreenAd object = FullScreenAd();
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => ShowLottie(),

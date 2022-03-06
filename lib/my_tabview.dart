@@ -8,6 +8,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
@@ -16,10 +17,10 @@ import 'package:sharestapp/pages/home.dart';
 import 'package:sharestapp/pages/saved_images.dart';
 import 'package:sharestapp/pages/saved_videos.dart';
 import 'package:sharestapp/providers/show_lottie.dart';
-import 'package:sharestapp/services/ads.dart';
 import 'package:sharestapp/services/get_image_video.dart';
 import 'package:sharestapp/services/save_image.dart';
 import 'package:sharestapp/services/share_image.dart';
+import 'package:sharestapp/services/show_interstitial_ad.dart';
 import 'package:video_player/video_player.dart';
 
 class MyTabView extends StatefulWidget {
@@ -31,6 +32,7 @@ class _MyTabViewState extends State<MyTabView> {
   String? _imageurl;
   String? instaposturl;
   String? _sharedText, sessionId;
+  BannerAd? myBanner;
 
   var permission = Permission.storage;
   bool permissionStatus = false;
@@ -43,6 +45,8 @@ class _MyTabViewState extends State<MyTabView> {
   @override
   void initState() {
     super.initState();
+
+    _initBannerAd();
     requestPermission();
 
     _intentDataStreamSubscription =
@@ -152,6 +156,17 @@ class _MyTabViewState extends State<MyTabView> {
     });
   }
 
+  _initBannerAd() {
+    myBanner = BannerAd(
+      adUnitId: "ca-app-pub-3940256099942544/6300978111",
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: const BannerAdListener(),
+    );
+
+    myBanner!.load();
+  }
+
   _itsPrivate() {
     Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
     showDialog(
@@ -223,7 +238,8 @@ class _MyTabViewState extends State<MyTabView> {
             TextButton(
               onPressed: () {
                 SaveImageToDir(file.file).saveImageToDir();
-                InterstitialAd().showAd();
+                // InterstitialAd().showAd();
+                FullScreenAd.object.show();
                 Navigator.of(context).pop();
               },
               child: Text("SAVE"),
@@ -239,7 +255,8 @@ class _MyTabViewState extends State<MyTabView> {
             TextButton(
               child: Text("CLOSE"),
               onPressed: () {
-                InterstitialAd().showAd();
+                // InterstitialAd().showAd();
+                FullScreenAd.object.show();
                 Navigator.of(context).pop();
               },
             ),
@@ -281,7 +298,8 @@ class _MyTabViewState extends State<MyTabView> {
             TextButton(
               onPressed: () {
                 SaveImageToDir(file.file).saveVideoToDir();
-                InterstitialAd().showAd();
+                // InterstitialAd().showAd();
+                FullScreenAd.object.show();
                 _controller!.pause();
                 Navigator.of(context).pop();
               },
@@ -293,7 +311,8 @@ class _MyTabViewState extends State<MyTabView> {
                 _setShareCount();
                 ShareImage(file.file.path).shareImage();
                 _controller!.pause();
-                // InterstitialAd().showAd();
+                // // InterstitialAd().showAd();
+                FullScreenAd.object.show();
                 Navigator.of(context).pop();
               },
             ),
@@ -301,7 +320,8 @@ class _MyTabViewState extends State<MyTabView> {
               child: Text("CLOSE"),
               onPressed: () {
                 _controller!.pause();
-                InterstitialAd().showAd();
+                // InterstitialAd().showAd();
+                FullScreenAd.object.show();
                 Navigator.of(context).pop();
               },
             ),
@@ -357,6 +377,8 @@ class _MyTabViewState extends State<MyTabView> {
 
   @override
   Widget build(BuildContext context) {
+    final AdWidget adWidget = AdWidget(ad: myBanner!);
+
     return !permissionStatus
         ? Scaffold(
             appBar: AppBar(
@@ -454,6 +476,12 @@ class _MyTabViewState extends State<MyTabView> {
                   MySharestappPage(),
                   SavedVideoPage(),
                 ],
+              ),
+              bottomNavigationBar: Container(
+                alignment: Alignment.center,
+                child: adWidget,
+                width: myBanner!.size.width.toDouble(),
+                height: myBanner!.size.height.toDouble(),
               ),
             ),
           );
