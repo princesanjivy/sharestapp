@@ -10,9 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -23,6 +20,8 @@ import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+
+//import com.google.android.gms.ads.InterstitialAd;
 
 public class MainActivity extends FlutterActivity {
     public static final String CHANNEL = "com.princeappstudio.saveimage";
@@ -63,12 +62,12 @@ public class MainActivity extends FlutterActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-//                Toast.makeText(MainActivity.this, "Initialized", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+////                Toast.makeText(MainActivity.this, "Initialized", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 //        interstitialAd = new InterstitialAd(this);
 //        interstitialAd.setAdUnitId("ca-app-pub-5164932036098856/4141348422");

@@ -17,7 +17,7 @@ description: I'll make it simple
 # as your whatsapp status and also share to your whatsapp contacts. Sharestapp will make your task
 # simple and easier.
 
-version: 1.3.0
+version: 1.4.1
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -34,7 +34,7 @@ dependencies:
   shared_preferences: ^2.0.13
   path_provider: ^2.0.9
   permission_handler: ^9.2.0
-  video_player: ^2.2.19
+  video_player: ^2.4.10
   video_thumbnail: ^0.4.6
   gesture_zoom_box:
     git:

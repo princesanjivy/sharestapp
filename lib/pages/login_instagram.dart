@@ -25,9 +25,10 @@ class _InstaLoginState extends State<InstaLogin> {
   getCookies(String currentUrl) async {
     final prefs = await SharedPreferences.getInstance();
 
-    flutterWebViewPlugin.getAllCookies(currentUrl).then((sessionId) async {
-      print(sessionId);
-      await prefs.setString("sessionid", sessionId.toString());
+    flutterWebViewPlugin.getAllCookies(currentUrl).then((value) async {
+      print(value);
+      await prefs.setString("sessionid", value[0]);
+      await prefs.setString("ds_user_id", value[1]);
 
       flutterWebViewPlugin.close();
       Navigator.pushReplacement(

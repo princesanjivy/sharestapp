@@ -52,9 +52,12 @@ class _MyTabViewState extends State<MyTabView> {
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       print(sessionId);
+      print("URL: $value");
       if (value != null) {
         if (sessionId != null) {
-          if (value.contains("?utm") && value.contains("www.instagram.com")) {
+          print("Insta: $value");
+          if (value.contains("?igshid") &&
+              value.contains("www.instagram.com/p/")) {
             setState(() {
               _sharedText = value;
               if (_sharedText != null) {
@@ -62,11 +65,39 @@ class _MyTabViewState extends State<MyTabView> {
 
                 instaposturl = _sharedText;
                 instaposturl = instaposturl!.substring(
-                    instaposturl!.indexOf("ttps://") - 1,
-                    instaposturl!.indexOf("?utm"));
+                    instaposturl!.indexOf("https://"),
+                    instaposturl!.indexOf("?igshid"));
 
                 print(instaposturl);
-                GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+                GetImageVideoFromUrl(instaposturl).myImage().then((value) {
+                  setState(() {
+                    print(value);
+                    _imageurl = value;
+
+                    if (_imageurl != null && _imageurl != "private")
+                      _saveImagetoCache(_imageurl);
+                    else {
+                      print("Its private");
+                      _itsPrivate();
+                    }
+                  });
+                });
+              }
+            });
+          } else if (value.contains("?igshid") &&
+              value.contains("www.instagram.com/reel/")) {
+            setState(() {
+              _sharedText = value;
+              if (_sharedText != null) {
+                showLoadingDialog(context, _keyLoader);
+
+                instaposturl = _sharedText;
+                instaposturl = instaposturl!.substring(
+                    instaposturl!.indexOf("https://"),
+                    instaposturl!.indexOf("?igshid"));
+
+                print(instaposturl);
+                GetImageVideoFromUrl(instaposturl).myVideo().then((value) {
                   setState(() {
                     print(value);
                     _imageurl = value;
@@ -108,7 +139,8 @@ class _MyTabViewState extends State<MyTabView> {
       print("URL: $value");
       if (value != null) {
         if (sessionId != null) {
-          if (value.contains("?utm") && value.contains("www.instagram.com")) {
+          if (value.contains("?igshid") &&
+              value.contains("www.instagram.com/p/")) {
             setState(() {
               _sharedText = value;
               if (_sharedText != null) {
@@ -116,11 +148,39 @@ class _MyTabViewState extends State<MyTabView> {
 
                 instaposturl = _sharedText;
                 instaposturl = instaposturl!.substring(
-                    instaposturl!.indexOf("ttps://") - 1,
-                    instaposturl!.indexOf("?utm"));
+                    instaposturl!.indexOf("https://"),
+                    instaposturl!.indexOf("?igshid"));
 
                 print(instaposturl);
-                GetImageVideoFromUrl(instaposturl).myImageVideo().then((value) {
+                GetImageVideoFromUrl(instaposturl).myImage().then((value) {
+                  setState(() {
+                    print(value);
+                    _imageurl = value;
+
+                    if (_imageurl != null && _imageurl != "private")
+                      _saveImagetoCache(_imageurl);
+                    else {
+                      print("Its private");
+                      _itsPrivate();
+                    }
+                  });
+                });
+              }
+            });
+          } else if (value.contains("?igshid") &&
+              value.contains("www.instagram.com/reel/")) {
+            setState(() {
+              _sharedText = value;
+              if (_sharedText != null) {
+                showLoadingDialog(context, _keyLoader);
+
+                instaposturl = _sharedText;
+                instaposturl = instaposturl!.substring(
+                    instaposturl!.indexOf("https://"),
+                    instaposturl!.indexOf("?igshid"));
+
+                print(instaposturl);
+                GetImageVideoFromUrl(instaposturl).myVideo().then((value) {
                   setState(() {
                     print(value);
                     _imageurl = value;
@@ -158,7 +218,7 @@ class _MyTabViewState extends State<MyTabView> {
 
   _initBannerAd() {
     myBanner = BannerAd(
-      adUnitId: "ca-app-pub-3940256099942544/6300978111",
+      adUnitId: "ca-app-pub-5164932036098856/9529329481",
       size: AdSize.banner,
       request: const AdRequest(),
       listener: const BannerAdListener(),

@@ -34,6 +34,8 @@ import 'package:sharestapp/services/show_interstitial_ad.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
+  // MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
+  //     testDeviceIds: ['4603548B2FE5102EF89FAAB3102DE469']));
   FullScreenAd object = FullScreenAd();
 
   runApp(
