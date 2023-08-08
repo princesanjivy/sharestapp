@@ -26,7 +26,7 @@ dependencies:
   flutter:
     sdk: flutter
   receive_sharing_intent: ^1.4.5
-  google_fonts: ^2.3.1
+  google_fonts: ^4.0.0
   flutter_cache_manager: ^3.3.0
   lottie: ^1.2.2
   url_launcher: ^6.0.20 
@@ -38,8 +38,8 @@ dependencies:
   video_thumbnail: ^0.4.6
   gesture_zoom_box:
     git:
-      url: https://github.com/jhass/gesture_zoom_box.git
-      ref: nullsafety
+      url: https://github.com/shichaohui/gesture_zoom_box.git
+      ref: master
       path: package_src
   flutter_webview_plugin: ^0.4.0
   provider: ^6.0.2
