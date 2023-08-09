@@ -34,7 +34,7 @@ class _MyTabViewState extends State<MyTabView> {
   String? _sharedText, sessionId;
   BannerAd? myBanner;
 
-  var permission = Permission.storage;
+  var permission = Permission.manageExternalStorage;
   bool permissionStatus = false;
   late StreamSubscription _intentDataStreamSubscription;
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();

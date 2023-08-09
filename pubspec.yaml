@@ -33,7 +33,7 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   shared_preferences: ^2.0.13
   path_provider: ^2.0.9
-  permission_handler: ^9.2.0
+  permission_handler: ^10.4.3
   video_player: ^2.4.10
   video_thumbnail: ^0.4.6
   gesture_zoom_box:
