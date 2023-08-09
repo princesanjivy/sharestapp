@@ -44,6 +44,7 @@ dependencies:
   flutter_webview_plugin: ^0.4.0
   provider: ^6.0.2
   google_mobile_ads: ^1.0.1
+  webview_cookie_manager: ^2.0.6
 
 
 dependency_overrides:
